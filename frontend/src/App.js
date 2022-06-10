@@ -20,14 +20,15 @@ const App = () => {
       .catch((err) => {
         console.log(err);
       })
+      setWord('')
   }
 
 
 
   return (
     <div>
-      <Header title="Images Gallery 2" version="1.0.0"/>
-      <Search word={word} setWord={setWord} handleSubmit={handleSearchSubmit}/>
+      <Header title="Images Gallery 2" version="1.0.0" />
+      <Search word={word} setWord={setWord} handleSubmit={handleSearchSubmit} />
     </div>
   );
 }
