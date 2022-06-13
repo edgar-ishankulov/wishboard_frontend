@@ -2,8 +2,8 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 
 const Welcome = () => (
-  <div class="jumbotron jumbotron-fluid">
-    <div class="container" className="my-5 px-5 ">
+  <div className="jumbotron jumbotron-fluid">
+    <div className="container my-5 px-5 ">
       <h1 className="display-4 d-flex justify-content-center fs-2 fw-semibold">
         Images Gallery 2
       </h1>
