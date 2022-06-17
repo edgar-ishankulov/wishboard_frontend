@@ -7,6 +7,9 @@ from dotenv import load_dotenv
 # requests package allows sending api requests to external sevices
 import requests
 
+#import CORS decorator
+from flask_cors import CORS
+
 # imports Flask app; Flask request object contains the data that the client (eg a browser) has sent to your app
 from flask import Flask, request
 
@@ -28,6 +31,9 @@ if not UNSPLASH_KEY:
 # creation of Flask app instance. __name__ represents the name of the application package and it's used by Flask to identify resources like templates, static assets and the instance folder. __name__ is automatically renamed into current filename at runtime.
 app = Flask(__name__)
 
+# use CORS extension globally
+CORS(app)
+
 # configuration of Flask app to enable Debug mode (relaunches app after save)
 app.config["DEBUG"] = DEBUG
 
@@ -44,6 +50,7 @@ def new_image():
     headers = {
         "Authorization": "Client-ID " + UNSPLASH_KEY,
         "Accept-Version": "v1"
+       
     }
 
 # creating the params dictionary; params - A dictionary, list of tuples or bytes to send as a query string.

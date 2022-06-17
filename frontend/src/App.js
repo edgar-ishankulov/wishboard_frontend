@@ -1,29 +1,29 @@
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container, Row, Col } from 'react-bootstrap';
 
 import Header from './components/Header';
 import Search from './components/Search';
 import ImageCard from './components/ImageCard';
-import { Container, Row, Col } from 'react-bootstrap';
 import Welcome from './components/Welcome';
 
-const UNSPLASH_KEY = process.env.REACT_APP_UNSPLASH_KEY;
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5050'; // getting API url from HTTP environment
 const App = () => {
-  const [word, setWord] = useState('');
-  const [images, setImages] = useState([]);
+  const [word, setWord] = useState(''); // using the useState hook for controlled variable "word", function that changes it "setWord", default value of ''
+  const [images, setImages] = useState([]); // using the useState hook for controlled variable "word", function that changes it "setWord", default value of empty array
 
   const handleSearchSubmit = (event) => {
-    event.preventDefault();
+    //declaring a function with a parameter
+    event.preventDefault(); // preventing default behavior of http that reloads the page
 
-    fetch(
-      `https://api.unsplash.com/photos/random/?query=${word}&client_id=${UNSPLASH_KEY}`
-    )
-      .then((res) => res.json())
+    fetch(`${API_URL}/new-image?query=${word}`) // sending a fetch request to the server and passing parameters to it
+      .then((res) => res.json()) // get promise in respose and convert it into json which returns another promise
       .then((data) => {
-        setImages([{ ...data, title: word }, ...images]);
+        // get the resolved promise response as json data
+        setImages([{ ...data, title: word }, ...images]); //run the setImages function; add title key with value of word to the received data; add the rest of the images to the array;
       })
       .catch((err) => {
+        // catch the error
         console.log(err);
       });
     setWord('');
