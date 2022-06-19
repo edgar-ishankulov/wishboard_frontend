@@ -7,7 +7,7 @@ import Search from './components/Search';
 import ImageCard from './components/ImageCard';
 import Welcome from './components/Welcome';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5050'; // getting API url from HTTP environment
+const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5050'; // getting API url from HTTP environment
 const App = () => {
   const [word, setWord] = useState(''); // using the useState hook for controlled variable "word", function that changes it "setWord", default value of ''
   const [images, setImages] = useState([]); // using the useState hook for controlled variable "word", function that changes it "setWord", default value of empty array
