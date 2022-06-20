@@ -48,6 +48,7 @@ def new_image():
 
     # request.arg is an immutable multi dictionary that is the query part of user request, has key value pairs that can be accessed with GET method.
     word = request.args.get("query")
+    
 
     # creating a dictionary and inserting one of the possible authorization methods of Unsplash (through headers dict); HTTP headers let the client and the server pass additional information with an HTTP request or response. All the headers are case-insensitive, headers fields are separated by colon, key-value pairs in clear-text string format.
     headers = {"Authorization": "Client-ID " +

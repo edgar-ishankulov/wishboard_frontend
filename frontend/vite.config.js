@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import svgrPlugin from 'vite-plugin-svgr';
 import inject from '@rollup/plugin-inject';
 import react from '@vitejs/plugin-react';
-import eslint from 'vite-plugin-eslint';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,7 +19,6 @@ export default defineConfig({
       $: 'jquery',
     }),
     react(),
-    eslint(),
     svgrPlugin({
       svgrOptions: {
         icon: true,
