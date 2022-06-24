@@ -8,6 +8,10 @@ flask = "==2.1.2"
 requests = "*"
 flask-cors = "*"
 python-dotenv = "*"
+pymongo = {extras = ["srv"], version = "*"}
+flask-mongoengine = "*"
+wheel = "*"
+mongoengine = "*"
 
 [dev-packages]
 black = "*"

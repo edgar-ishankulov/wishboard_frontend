@@ -1,18 +1,32 @@
 import React from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { Card, Container } from 'react-bootstrap';
+import "../css/custom.scss";
+
+const styles = {
+  cardImage: {
+    objectFit: 'cover',
+    height: '50vh'
+  }
+}
 
 const ImageCard = ({ image, deleteImage }) => {
   return (
-    <Card style={{ width: '18rem' }}>
-      <Card.Img variant="top" src={image.urls.small} />
-      <Card.Body>
+    <div>
+    <Card>
+      <Card.Img  className="card-image" src={image.urls.small} />
+      <Card.Body className='card-img-overlay d-flex align-items-end'>
+        <Container>
         <Card.Title>{image.title.toUpperCase()}</Card.Title>
         <Card.Text>{image.description || image.alt_description}</Card.Text>
-        <Button variant="primary" onClick={() => deleteImage(image.id)}>
+        <button className='btn btn-primary' onClick={() => deleteImage(image.id)}>
           Delete
-        </Button>
+        </button>
+        </Container>
       </Card.Body>
     </Card>
+    
+      </div>
+     
   );
 };
 
