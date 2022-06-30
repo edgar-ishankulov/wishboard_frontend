@@ -1,6 +1,6 @@
 
 
-$primary: black;
+// $primary: black;
 
 
 @import "../../node_modules/bootstrap/scss/functions";
@@ -18,8 +18,8 @@ $theme-colors: map-merge($custom-theme-colors, $theme-colors);
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
 
-.test {
-    background-color: black;
+.image-card-text {
+    color: white;
 }
 
 .card-image {
@@ -28,4 +28,10 @@ $theme-colors: map-merge($custom-theme-colors, $theme-colors);
     
   }
 
+.test {
+    background-color: black;
+}
 
+.pretest {
+    background-color: red;
+}

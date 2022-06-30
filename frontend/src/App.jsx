@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'react-bootstrap';
 
@@ -7,31 +8,50 @@ import Search from './components/Search';
 import ImageCard from './components/ImageCard';
 import Welcome from './components/Welcome';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5050'; // getting API url from HTTP environment
+const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5050';
+const savedImgInDbEndpoint = `${API_URL}/images`
+
 const App = () => {
-  const [word, setWord] = useState(''); // using the useState hook for controlled variable "word", function that changes it "setWord", default value of ''
-  const [images, setImages] = useState([]); // using the useState hook for controlled variable "word", function that changes it "setWord", default value of empty array
+  const [word, setWord] = useState('');
+  const [images, setImages] = useState([]);
+  const [dbBtn, setDbBtn] = useState('')
 
-  const handleSearchSubmit = (event) => {
-    //declaring a function with a parameter
-    event.preventDefault(); // preventing default behavior of http that reloads the page
+  useEffect(() => {
+    async function getSavedImages() {
+      try {
+        const res = await axios.get(savedImgInDbEndpoint);
+        setImages(res.data.reverse() || []);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getSavedImages();
+  }, []);
 
-    fetch(`${API_URL}/new-image?query=${word}`) // sending a fetch request to the server and passing parameters to it
-      .then((res) => res.json()) // get promise in respose and convert it into json which returns another promise
-      .then((data) => {
-        // get the resolved promise response as json data
-        setImages([{ ...data, title: word }, ...images]); //run the setImages function; add title key with value of word to the received data; add the rest of the images to the array;
-      })
-      .catch((err) => {
-        // catch the error
-        console.log(err);
-      });
+  const handleSearchSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const res = await axios.get(`${API_URL}/new-image?query=${word}`);
+      setImages([{ ...res.data, title: word, check: 'false' }, ...images]);
+    } catch (err) {
+      console.log(err);
+    }
+
     setWord('');
   };
-
   const handleDeleteImage = (id) => {
+    // console.log(id);
+    // console.log(image);
     setImages(images.filter((image) => image.id !== id));
+    // axios.delete(savedImgInDbEndpoint)
   };
+
+  async function handleSaveImageToDb(id) {
+    const image = images.filter((image) => image.id === id);
+    const sepImage = image[0];
+    const sepImageWithCheck = { ...sepImage, check: 'true' };
+    await axios.post(savedImgInDbEndpoint, sepImageWithCheck);
+  }
 
   return (
     <div>
@@ -42,7 +62,13 @@ const App = () => {
           <Row xs={1} md={2} lg={3}>
             {images.map((image, i) => (
               <Col key={i} className="pb-4">
-                <ImageCard image={image} deleteImage={handleDeleteImage} />
+                <ImageCard
+                  image={image}
+                  deleteImage={handleDeleteImage}
+                  saveImageToDb={handleSaveImageToDb}
+                  dbBtn={dbBtn}
+                
+                />
               </Col>
             ))}
           </Row>

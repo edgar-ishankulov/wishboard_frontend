@@ -1,12 +1,14 @@
 from mongoengine import *
-from mongo_client import *
 import os
 from dotenv import load_dotenv
 import requests
 from flask_cors import CORS
-from flask import Flask, request
+from flask import Flask, jsonify, request
 from flask_mongoengine import MongoEngine
+# from pymongo import MongoClient
+connect(host='mongodb+srv://edgarishankulov:numberfucking23@cluster0.avgjl.mongodb.net/images-db?retryWrites=true&w=majority')
 
+# client = MongoClient('mongodb+srv://edgarishankulov:numberfucking23@cluster0.avgjl.mongodb.net/images-db?retryWrites=true&w=majority')
 load_dotenv(dotenv_path="./.env.local")
 
 UNSPLASH_URL = "https://api.unsplash.com/photos/random/"
@@ -33,13 +35,28 @@ def new_image():
     data = response.json()
     return data
 
+class User(DynamicDocument):
+    id = StringField(primary_key=True)
 
-@app.route("/images", methods=["GET", "POST"])
+    # test = StringField()
+    # meta = {'strict': False}
+
+@app.route("/images", methods=["GET", "POST", "DELETE"])
 def images():
+    
     if request.method == "GET":
-        image = Image.objects()
+        image = User.objects()
         return image.to_json()
-    # if request.method == "POST":
+    
+    if request.method == "POST":
+        
+        img = request.get_json()
+        imageSave = User(**img).save()
+        return 'imageSave'
+
+    # if request.method == "DELETE":
+
+
 
 
 if __name__ == "__main__":
