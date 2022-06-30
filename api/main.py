@@ -6,14 +6,14 @@ from flask import Flask, jsonify, request
 import pymongo
 from pymongo import MongoClient
 from bson.json_util import dumps
-# connect(host='mongodb+srv://edgarishankulov:numberfucking23@cluster0.avgjl.mongodb.net/images-db?retryWrites=true&w=majority')
 
-client = pymongo.MongoClient('mongodb+srv://edgarishankulov:numberfucking23@cluster0.avgjl.mongodb.net/images-db?retryWrites=true&w=majority')
 load_dotenv(dotenv_path="./.env.local")
 
 UNSPLASH_URL = "https://api.unsplash.com/photos/random/"
+DB_HOST = os.environ.get("DB_HOST")
 UNSPLASH_KEY = os.environ.get("UNSPLASH_KEY", "")
 DEBUG = bool(os.environ.get("DEBUG", True))
+client = pymongo.MongoClient(DB_HOST)
 
 if not UNSPLASH_KEY:
     raise EnvironmentError(
@@ -41,9 +41,6 @@ def new_image():
 def images():
     
     if request.method == "GET":
-    #     db = client.test_database
-        # image = User.objects()
-        # return image.to_json()
         db = client["images-db"]
         imagesCollection = db["imagesCollection"]
         return dumps(imagesCollection.find())
@@ -54,6 +51,13 @@ def images():
         img = request.get_json()
         imagesCollection.insert_one(img)
         return "Image saved"
+
+    if request.method == "DELETE":
+        db = client["images-db"]
+        imagesCollection = db["imagesCollection"]
+        img = request.get_json()
+        imagesCollection.delete_one(img)
+        return "Image Deleted"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5050)

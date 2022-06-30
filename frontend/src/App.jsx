@@ -9,12 +9,12 @@ import ImageCard from './components/ImageCard';
 import Welcome from './components/Welcome';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5050';
-const savedImgInDbEndpoint = `${API_URL}/images`
+const savedImgInDbEndpoint = `${API_URL}/images`;
 
 const App = () => {
   const [word, setWord] = useState('');
   const [images, setImages] = useState([]);
-  const [dbBtn, setDbBtn] = useState('')
+  const [dbBtn, setDbBtn] = useState('');
 
   useEffect(() => {
     async function getSavedImages() {
@@ -39,17 +39,25 @@ const App = () => {
 
     setWord('');
   };
+
   const handleDeleteImage = (id) => {
-    // console.log(id);
-    // console.log(image);
+    const removeImage = async () => {
+      console.log(id);
+      try {
+        const res = await axios.delete(`${API_URL}/images`, { data: { "id": id } });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    removeImage();
     setImages(images.filter((image) => image.id !== id));
-    // axios.delete(savedImgInDbEndpoint)
   };
 
   async function handleSaveImageToDb(id) {
     const image = images.filter((image) => image.id === id);
     const sepImage = image[0];
-    const sepImageWithCheck = { ...sepImage, check: 'true' };
+    sepImage.check = "true"
+    const sepImageWithCheck = { ...sepImage};
     await axios.post(savedImgInDbEndpoint, sepImageWithCheck);
   }
 
@@ -67,7 +75,6 @@ const App = () => {
                   deleteImage={handleDeleteImage}
                   saveImageToDb={handleSaveImageToDb}
                   dbBtn={dbBtn}
-                
                 />
               </Col>
             ))}
