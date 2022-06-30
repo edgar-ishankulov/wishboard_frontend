@@ -12072,8 +12072,8 @@ textarea.form-control-lg {
   height: 60vh;
 }
 
-.test {
-  background-color: black;
+.loading-button {
+  margin: 0 10px;
 }
 
 .pretest {

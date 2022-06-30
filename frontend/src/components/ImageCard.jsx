@@ -3,23 +3,15 @@ import '../css/custom.scss';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useState, useEffect } from 'react';
 
-const styles = {
-  cardImage: {
-    objectFit: 'cover',
-    height: '50vh',
-  },
-};
-
-const ImageCard = ({  image,  deleteImage,  saveImageToDb,}) => {
-  const [saveBtn, setSaveBtn] = useState('')
+const ImageCard = ({ image, deleteImage, saveImageToDb }) => {
+  const [saveBtn, setSaveBtn] = useState('');
   useEffect(() => {
     function imgCheck() {
-      return image.check
+      return image.check;
     }
-imgCheck()
-  }, [setSaveBtn])
+    imgCheck();
+  }, [setSaveBtn]);
 
- 
   return (
     <div>
       <Card>
@@ -34,7 +26,8 @@ imgCheck()
             </Card.Text>
 
             <LoadingButton
-              className="btn btn-primary"
+              variant='contained'
+              sx={{mr: 2}}
               onClick={() => deleteImage(image.id)}
             >
               Delete
@@ -43,10 +36,12 @@ imgCheck()
             <LoadingButton
               onClick={() => {
                 saveImageToDb(image.id);
-                setSaveBtn(image.check)
+                setSaveBtn(image.check);
               }}
+              disabled={image.check == "true" ? true : false}
+              variant='contained'
             >
-              {image.check}
+              {image.check == "true"? "Saved" : "Save"}
             </LoadingButton>
           </Container>
         </Card.Body>
