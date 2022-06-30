@@ -1,14 +1,14 @@
-from mongoengine import *
 import os
 from dotenv import load_dotenv
 import requests
 from flask_cors import CORS
 from flask import Flask, jsonify, request
-from flask_mongoengine import MongoEngine
-# from pymongo import MongoClient
-connect(host='mongodb+srv://edgarishankulov:numberfucking23@cluster0.avgjl.mongodb.net/images-db?retryWrites=true&w=majority')
+import pymongo
+from pymongo import MongoClient
+from bson.json_util import dumps
+# connect(host='mongodb+srv://edgarishankulov:numberfucking23@cluster0.avgjl.mongodb.net/images-db?retryWrites=true&w=majority')
 
-# client = MongoClient('mongodb+srv://edgarishankulov:numberfucking23@cluster0.avgjl.mongodb.net/images-db?retryWrites=true&w=majority')
+client = pymongo.MongoClient('mongodb+srv://edgarishankulov:numberfucking23@cluster0.avgjl.mongodb.net/images-db?retryWrites=true&w=majority')
 load_dotenv(dotenv_path="./.env.local")
 
 UNSPLASH_URL = "https://api.unsplash.com/photos/random/"
@@ -35,29 +35,25 @@ def new_image():
     data = response.json()
     return data
 
-class User(DynamicDocument):
-    id = StringField(primary_key=True)
 
-    # test = StringField()
-    # meta = {'strict': False}
 
 @app.route("/images", methods=["GET", "POST", "DELETE"])
 def images():
     
     if request.method == "GET":
-        image = User.objects()
-        return image.to_json()
+    #     db = client.test_database
+        # image = User.objects()
+        # return image.to_json()
+        db = client["images-db"]
+        imagesCollection = db["imagesCollection"]
+        return dumps(imagesCollection.find())
     
     if request.method == "POST":
-        
+        db = client["images-db"]
+        imagesCollection = db["imagesCollection"]
         img = request.get_json()
-        imageSave = User(**img).save()
-        return 'imageSave'
-
-    # if request.method == "DELETE":
-
-
-
+        imagesCollection.insert_one(img)
+        return "Image saved"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5050)
