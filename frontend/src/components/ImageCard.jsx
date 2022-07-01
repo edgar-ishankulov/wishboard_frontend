@@ -16,7 +16,7 @@ console.log(image.check)
   return (
     <div>
       <Card>
-        <Card.Img className="card-image" src={image.urls.small} />
+        <Card.Img className="card-image d-flex" src={image.urls.small} />
         <Card.Body className="card-img-overlay d-flex align-items-end">
           <Container>
             <Card.Title className="image-card-text">
@@ -29,6 +29,7 @@ console.log(image.check)
             <LoadingButton
               variant='contained'
               sx={{mr: 2}}
+              size="small"
               onClick={() => deleteImage(image.id)}
             >
               Delete
@@ -39,6 +40,7 @@ console.log(image.check)
                 saveImageToDb(image.id);
                 setSaveBtn(image.check);
               }}
+              size="small"
               disabled={image.check == "true" ? true : false}
               variant='contained'
               >
