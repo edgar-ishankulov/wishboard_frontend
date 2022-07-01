@@ -32,17 +32,16 @@ const App = () => {
     event.preventDefault();
     try {
       const res = await axios.get(`${API_URL}/new-image?query=${word}`);
-      setImages([{ ...res.data, title: word, check: 'false' }, ...images]);
+      res.data.check='false'
+      setImages([{ ...res.data, title: word }, ...images]);
     } catch (err) {
       console.log(err);
     }
 
     setWord('');
   };
-
   const handleDeleteImage = (id) => {
     const removeImage = async () => {
-      console.log(id);
       try {
         const res = await axios.delete(`${API_URL}/images`, { data: { "id": id } });
       } catch (error) {
@@ -57,8 +56,8 @@ const App = () => {
     const image = images.filter((image) => image.id === id);
     const sepImage = image[0];
     sepImage.check = "true"
-    const sepImageWithCheck = { ...sepImage};
-    await axios.post(savedImgInDbEndpoint, sepImageWithCheck);
+    await axios.post(savedImgInDbEndpoint, sepImage);
+    setImages([...images])
   }
 
   return (
@@ -75,6 +74,7 @@ const App = () => {
                   deleteImage={handleDeleteImage}
                   saveImageToDb={handleSaveImageToDb}
                   dbBtn={dbBtn}
+                  setWord={setWord}
                 />
               </Col>
             ))}

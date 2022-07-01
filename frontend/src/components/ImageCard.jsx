@@ -4,14 +4,15 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { useState, useEffect } from 'react';
 
 const ImageCard = ({ image, deleteImage, saveImageToDb }) => {
-  const [saveBtn, setSaveBtn] = useState('');
+  const [saveBtn, setSaveBtn] = useState(image.check);
   useEffect(() => {
     function imgCheck() {
-      return image.check;
+      return setSaveBtn(image.check);
     }
     imgCheck();
   }, [setSaveBtn]);
 
+console.log(image.check)
   return (
     <div>
       <Card>
@@ -40,7 +41,7 @@ const ImageCard = ({ image, deleteImage, saveImageToDb }) => {
               }}
               disabled={image.check == "true" ? true : false}
               variant='contained'
-            >
+              >
               {image.check == "true"? "Saved" : "Save"}
             </LoadingButton>
           </Container>
