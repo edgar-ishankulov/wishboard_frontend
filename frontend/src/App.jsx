@@ -7,7 +7,7 @@ import Header from './components/Header';
 import Search from './components/Search';
 import ImageCard from './components/ImageCard';
 import Welcome from './components/Welcome';
-import Wishboard from './pages/Wishboard';
+import useToken from './components/UseToken'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5050';
 const savedImgInDbEndpoint = `${API_URL}/images`;
@@ -16,17 +16,7 @@ const App = () => {
   const [word, setWord] = useState('');
   const [images, setImages] = useState([]);
 
-  // useEffect(() => {
-  //   async function getSavedImages() {
-  //     try {
-  //       const res = await axios.get(savedImgInDbEndpoint);
-  //       setImages(res.data.reverse() || []);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  //   getSavedImages();
-  // }, []);
+  const { token, removeToken, setToken } = useToken();
 
   const handleSearchSubmit = async (event) => {
     event.preventDefault();
@@ -55,7 +45,7 @@ const App = () => {
 
   return (
     <div>
-      <Header title="Images Gallery 2" version="1.0.0" />
+      <Header token={token} setToken={setToken} title="Images Gallery 2" version="1.0.0" />
       <Search word={word} setWord={setWord} handleSubmit={handleSearchSubmit} />
       <Container className="mt-5">
         {images.length ? (

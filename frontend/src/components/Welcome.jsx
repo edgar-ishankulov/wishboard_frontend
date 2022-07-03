@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import Button from '@mui/material/Button';
 
 const Welcome = () => (
   <div className="jumbotron jumbotron-fluid">
@@ -12,7 +12,7 @@ const Welcome = () => (
         according to the user search inputs.
       </p>
       <p className="d-flex justify-content-center">
-        <Button variant="primary" href="https://unsplash.com" target="_blank">
+        <Button variant="outlined" href="https://unsplash.com" target="_blank">
           Learn More
         </Button>
       </p>
