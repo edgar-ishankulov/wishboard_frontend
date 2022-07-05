@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { FormControl, InputLabel, Input, Button, Box } from '@mui/material';
-import useToken from './UseToken';
+import useToken from '../components/UseToken';
+import { Link } from 'react-router-dom';
+import '../css/custom.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5050';
 
@@ -39,6 +41,7 @@ function Login({ token, setToken }) {
     });
 
     event.preventDefault();
+    
   };
   function handleChange(event) {
     const { value, name } = event.target;
@@ -49,6 +52,9 @@ function Login({ token, setToken }) {
   }
 
   return (
+    <>
+    <h2 className='d-flex justify-content-center'>Please Log In</h2>
+
     <Box display="flex" justifyContent="center" my="3rem">
       <FormControl>
         <InputLabel sx={{ mx: 2 }}>Enter your email</InputLabel>
@@ -76,11 +82,28 @@ function Login({ token, setToken }) {
         />
       </FormControl>
       <Box alignSelf="end" mx="1rem">
-        <Button variant="contained" onClick={logMeIn}>
+        <Button variant="contained" onClick={logMeIn} >
           Submit
         </Button>
       </Box>
     </Box>
+    <Box display={"grid"} justifyContent={"center"}>
+   
+
+      <h3>Don't have an account?</h3>
+  
+    <Link to="/signup" style={{ textDecoration: 'none' }}>
+      <Box display={"flex"} justifyContent={"center"}>
+
+
+    
+                <Button variant="outlined" size="small">
+                  Signup
+                </Button>
+                </Box>
+              </Link>
+    </Box>
+    </>
   );
 }
 

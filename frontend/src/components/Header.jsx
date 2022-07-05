@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { Button, Box } from '@mui/material';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -27,11 +27,11 @@ const Header = ({ title, removeToken, token }) => {
       };
     }
   };
-  console.log(token);
   return (
-    <div>
-      <Container className="d-flex justify-content-center my-5">
-        <Box display="inline">
+    <>
+      <Container id="1" className="d-flex justify-content-between my-5">
+        <Container></Container>
+        <Container className="d-flex justify-content-center">
           <Link to="/">
             <Logo
               alt={title}
@@ -41,23 +41,39 @@ const Header = ({ title, removeToken, token }) => {
               }}
             />
           </Link>
-        </Box>
-        <Box display="inline" alignSelf="center">
-          {token == undefined ? (
-            ''
+        </Container>
+
+        <Container className="d-flex justify-content-end align-self-center">
+          <Link to="/profile" style={{ textDecoration: 'none', alignSelf: 'center' }}>
+            <Button
+              sx={{ whiteSpace: 'nowrap', mr: '1rem' }}
+              variant="contained"
+              size="small"
+              type="button"
+            >
+              My Wishboard
+            </Button>
+          </Link>
+
+          {token == undefined || token == null ? (
+            <Link to="/profile" style={{ textDecoration: 'none', alignSelf: 'center' }}>
+              <Button variant="outlined" size="small">
+                Login
+              </Button>
+            </Link>
           ) : (
             <Button
               variant="outlined"
               size="small"
-              sx={{ ml: 5 }}
+              // sx={{ ml: 5 }}
               onClick={logMeOut}
             >
               Logout
             </Button>
           )}
-        </Box>
+        </Container>
       </Container>
-    </div>
+    </>
   );
 };
 

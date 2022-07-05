@@ -1,57 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, Form } from 'react-bootstrap';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
+import { Button, Box } from '@mui/material';
 
 const Search = ({ handleSubmit, word, setWord }) => {
   return (
-    <Box my="2rem">
+    <Container className="">
       <Row className="justify-content-center">
-        <Col xs={12} md={8} lg={6}>
+        <Col className="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-10 justify-content-center">
           <Form onSubmit={handleSubmit}>
-            <Row>
-              <Col xs={9}>
-                <Form.Control
-                  type="text"
-                  value={word}
-                  onChange={(event) => setWord(event.target.value)}
-                  placeholder="Search for new images"
-                />
-              </Col>
-              <Col xs={3} className="d-flex">
-                <Box>
-                  <Box alignSelf={'center'}>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      sx={{
-                        margin: 'normal',
-                      }}
-                      type="submit"
-                    >
-                      Search
-                    </Button>
-                  </Box>
-                  <Box my="0.5rem" alignSelf={'center'}>
-                    <Link to="/wishboard">
-                      <Button
-                        sx={{ whiteSpace: 'nowrap' }}
-                        variant="contained"
-                        size="small"
-                        type="button"
-                      >
-                        My Wishboard
-                      </Button>
-                    </Link>
-                  </Box>
-                </Box>
-              </Col>
-            </Row>
+            <Container className="d-flex container-fluid">
+              <Form.Control
+                type="text"
+                value={word}
+                onChange={(event) => setWord(event.target.value)}
+                placeholder="Search for new images"
+              />
+              <Box alignSelf={'center'} ml={'1rem'}>
+                <Button variant="contained" size="small" type="submit">
+                  Search
+                </Button>
+              </Box>
+            </Container>
           </Form>
         </Col>
       </Row>
-    </Box>
+    </Container>
   );
 };
 

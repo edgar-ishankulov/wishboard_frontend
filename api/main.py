@@ -3,7 +3,7 @@ import json
 from dotenv import load_dotenv
 import requests
 from flask_cors import CORS
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, redirect
 from datetime import datetime, timedelta, timezone
 from flask_jwt_extended import (
     create_access_token,
@@ -113,6 +113,15 @@ def images():
         imagesCollection.delete_one(img)
         return "Image Deleted"
 
+@app.route("/signup", methods=["POST"])
+def signup():
+    db = client["images-db"]
+    users = db["users"]
+    user = {
+        "user": request.get_json(),
+        }
+    users.insert_one(user)
+    return "User signed up successfully"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5050) #nosec

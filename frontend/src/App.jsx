@@ -45,7 +45,7 @@ const App = () => {
 
   return (
     <div>
-      <Header token={token} setToken={setToken} title="Images Gallery 2" version="1.0.0" />
+      <Header removeToken={removeToken} token={token} setToken={setToken} title="Images Gallery 2" version="1.0.0" />
       <Search word={word} setWord={setWord} handleSubmit={handleSearchSubmit} />
       <Container className="mt-5">
         {images.length ? (
@@ -57,6 +57,7 @@ const App = () => {
                   deleteImage={handleDeleteImage}
                   saveImageToDb={handleSaveImageToDb}
                   setWord={setWord}
+                  token={token}
                 />
               </Col>
             ))}

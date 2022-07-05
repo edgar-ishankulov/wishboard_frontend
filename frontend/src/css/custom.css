@@ -12062,6 +12062,10 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+h3, .h3 {
+  font-size: 1rem;
+}
+
 .image-card-text {
   color: white;
 }

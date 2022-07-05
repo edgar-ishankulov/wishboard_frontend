@@ -1,7 +1,8 @@
-import Login from './Login';
+import Login from '../pages/Login';
 import Header from './Header';
 import Wishboard from '../pages/Wishboard';
 import useToken from './UseToken';
+import { Link } from 'react-router-dom';
 
 function Profile() {
   const { token, removeToken, setToken } = useToken();

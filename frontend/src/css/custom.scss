@@ -17,6 +17,11 @@ $theme-colors: map-merge($custom-theme-colors, $theme-colors);
 @import "../../node_modules/bootstrap/scss/root";
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
+h3 {
+   
+    font-size: 1rem;
+
+}
 
 .image-card-text {
     color: white;

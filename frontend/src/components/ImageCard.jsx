@@ -1,18 +1,27 @@
 import { Card, Container } from 'react-bootstrap';
-import '../css/custom.scss';
+import '../css/custom.css';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useState, useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 
-const ImageCard = ({ image, deleteImage, saveImageToDb }) => {
+const ImageCard = ({ image, deleteImage, saveImageToDb, token }) => {
   const [saveBtn, setSaveBtn] = useState(image.check);
+  const navigate = useNavigate()
+
   useEffect(() => {
     function imgCheck() {
       return setSaveBtn(image.check);
     }
     imgCheck();
   }, [setSaveBtn]);
+const checkForToken = () => {
+  if (token) {saveImageToDb(image.id)
+  setSaveBtn(image.check)}
+   else {
+    return navigate("/profile", {replace: true})
+   }
+}
 
-console.log(image.check)
   return (
     <div>
       <Card>
@@ -37,8 +46,10 @@ console.log(image.check)
 
             <LoadingButton
               onClick={() => {
-                saveImageToDb(image.id);
-                setSaveBtn(image.check);
+checkForToken()
+                // saveImageToDb(image.id)
+                // setSaveBtn(image.check)
+             
               }}
               size="small"
               disabled={image.check == "true" ? true : false}
