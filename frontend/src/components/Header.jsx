@@ -29,10 +29,12 @@ const Header = ({ title, removeToken, token }) => {
   };
   return (
     <>
-      <Container id="1" className="d-flex justify-content-between my-5">
-        <Container></Container>
-        <Container className="d-flex justify-content-center">
-          <Link to="/">
+      <Container className='my-5'>
+        <Row>
+<Col className='col-lg-4'></Col>
+
+          <Col className=' col-lg-4 col-12 col-sm-12 align-self-center mt-3 mb-2'>
+          <Link to="/" style={{ display: 'flex', justifyContent: 'center' }}>
             <Logo
               alt={title}
               style={{
@@ -41,14 +43,17 @@ const Header = ({ title, removeToken, token }) => {
               }}
             />
           </Link>
-        </Container>
+          </Col>
 
-        <Container className="d-flex justify-content-end align-self-center">
-          <Link to="/profile" style={{ textDecoration: 'none', alignSelf: 'center' }}>
+          <Col className=' d-inline text-center col-lg-4 justify-content-end align-self-center align-middle mt-1.5 mt-md-0'>
+          <Link
+            to="/profile"
+            style={{ textDecoration: 'none' }}
+          >
             <Button
-              sx={{ whiteSpace: 'nowrap', mr: '1rem' }}
+              sx={{ whiteSpace: 'nowrap', mr: '1rem', fontSize: "0.5rem" }}
               variant="contained"
-              size="small"
+              size="medium"
               type="button"
             >
               My Wishboard
@@ -56,22 +61,29 @@ const Header = ({ title, removeToken, token }) => {
           </Link>
 
           {token == undefined || token == null ? (
-            <Link to="/profile" style={{ textDecoration: 'none', alignSelf: 'center' }}>
-              <Button variant="outlined" size="small">
+
+            <Link
+              to="/profile"
+              style={{ textDecoration: 'none' }}
+            >
+              <Button variant="outlined" size="medium"  sx={{ fontSize: "0.5rem" }}>
                 Login
               </Button>
             </Link>
+
           ) : (
+
             <Button
               variant="outlined"
-              size="small"
-              // sx={{ ml: 5 }}
+              size="medium"
               onClick={logMeOut}
+              sx={{ fontSize: "0.5rem" }}
             >
               Logout
             </Button>
           )}
-        </Container>
+          </Col>
+        </Row>
       </Container>
     </>
   );

@@ -19,8 +19,15 @@ const Wishboard = ({ token, setToken }) => {
   useEffect(() => {
     async function getSavedImages() {
       try {
-        const res = await axios.get(savedImgInDbEndpoint);
-        setImages(res.data.reverse() || []);
+        const res = await axios({
+          method: 'GET',
+          url: `${API_URL}/images`,
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
+        });
+        console.log(res.data[0])
+        setImages(res.data[0].images.reverse() || []);
       } catch (error) {
         console.log(error);
       }
@@ -28,29 +35,29 @@ const Wishboard = ({ token, setToken }) => {
     getSavedImages();
   }, []);
 
-  const getData = async () => {
-    try {
-      await axios({
-        method: 'GET',
-        url: `${API_URL}/profile`,
-        headers: {
-          Authorization: 'Bearer ' + token,
-        },
-      });
-      const res = response.data;
-      res.access_token && setToken(res.access_token);
-      setProfileData({
-        profile_name: res.name,
-        about_me: res.about,
-      });
-    } catch {
-      if (error.response) {
-        console.log(error.response);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      }
-    }
-  };
+  // const getData = async () => {
+  //   try {
+  //     await axios({
+  //       method: 'GET',
+  //       url: `${API_URL}/profile`,
+  //       headers: {
+  //         Authorization: 'Bearer ' + token,
+  //       },
+  //     });
+  //     const res = response.data;
+  //     res.access_token && setToken(res.access_token);
+  //     setProfileData({
+  //       profile_name: res.name,
+  //       about_me: res.about,
+  //     });
+  //   } catch {
+  //     if (error.response) {
+  //       console.log(error.response);
+  //       console.log(error.response.status);
+  //       console.log(error.response.headers);
+  //     }
+  //   }
+  // };
 
   const handleDeleteImage = (id) => {
     const removeImage = async () => {

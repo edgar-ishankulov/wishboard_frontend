@@ -11,9 +11,10 @@ python-dotenv = "*"
 pymongo = {extras = ["srv"], version = "*"}
 flask-mongoengine = "*"
 wheel = "*"
-mongoengine = "*"
 flask-jwt-extended = "*"
 black = "*"
+flask-mail = "*"
+itsdangerous = "*"
 
 [dev-packages]
 black = "*"

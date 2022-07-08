@@ -39,7 +39,14 @@ const App = () => {
     const image = images.filter((image) => image.id === id);
     const sepImage = image[0];
     sepImage.check = 'true';
-    await axios.post(savedImgInDbEndpoint, sepImage);
+    console.log(sepImage)
+    await axios({
+      method: "POST",
+      url: savedImgInDbEndpoint,
+      headers: {
+        Authorization: 'Bearer ' + token
+      },
+      data: sepImage})
     setImages([...images]);
   }
 

@@ -17,7 +17,7 @@ const Search = ({ handleSubmit, word, setWord }) => {
                 placeholder="Search for new images"
               />
               <Box alignSelf={'center'} ml={'1rem'}>
-                <Button variant="contained" size="small" type="submit">
+                <Button variant="contained" size="medium" type="submit" sx={{ fontSize: "13px"}}>
                   Search
                 </Button>
               </Box>

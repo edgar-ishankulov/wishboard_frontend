@@ -35,13 +35,12 @@ if (signupSuccess === "true") {
           password: signUpForm.password,
         },
       });
-    } catch {
-      (error) => {
+    } catch (error) {
         if (error.response) {
           console.log(error.response);
           console.log(error.response.data);
           console.log(error.response.headers);
-        }
+        
       };
     }
 
