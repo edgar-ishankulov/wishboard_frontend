@@ -134,11 +134,12 @@ def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
     user = usersCollection.find_one({"email": email})
-    print(user)
+    if user == None:
+        return {"msg": "Wrong email or password"}, 401
     if email != user['email'] or password != user['password']: #nosec
         return {"msg": "Wrong email or password"}, 401
     if (user['is_verified'] == False):
-        return {"msg": "Account not verified"}, 401
+        return {"msg": "Account not verified"}, 402
 
     additional_claims = {"user": email}
     access_token = create_access_token(identity=email, additional_claims=additional_claims)
@@ -146,6 +147,7 @@ def create_token():
     return response
 
 mail = Mail(app)
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":

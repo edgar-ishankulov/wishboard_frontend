@@ -1,6 +1,14 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FormControl, InputLabel, Input, Button, Box } from '@mui/material';
+import {
+  FormControl,
+  InputLabel,
+  Input,
+  Button,
+  Box,
+  Snackbar,
+  Alert,
+} from '@mui/material';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,21 +19,65 @@ const Register = ({ token, removeToken }) => {
     email: '',
     password: '',
   });
-  const [signupSuccess, setSignupSuccess] = useState("false");
+  const [signupSuccess, setSignupSuccess] = useState('false');
   const navigate = useNavigate();
+  const [emailError, setEmailError] = useState(null);
+  const [passwordError, setPasswordError] = useState(null);
+  const [openEmail, setOpenEmail] = useState(false);
+  const [openPassword, setOpenPassword] = useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenEmail(false);
+    setOpenPassword(false);
+  };
+
+  function isValidEmail(email) {
+    return /\S+@\S+\.\S+/.test(email);
+  }
+  function isValidPassword(password) {
+    if (password == undefined || password == null) {
+      return false;
+    }
+    if (password.length < 8) {
+      return false;
+    }
+    return true;
+  }
 
   useEffect(() => {
-      function setSuccess () {
-if (signupSuccess === "true") {
-
-    return navigate("/profile", {replace: true})
-}
-        }
-        setSuccess()
-        setSignupSuccess("false")
+    function setSuccess() {
+      if (signupSuccess === 'true') {
+        return navigate('/profile', { replace: true });
+      }
+    }
+    setSuccess();
+    setSignupSuccess('false');
   }, [signupSuccess]);
 
-  const logMeIn = async (event) => {
+  useEffect(() => {
+    function checkForm() {
+      if (!isValidEmail(signUpForm.email)) {
+        setEmailError('Email is invalid');
+      } else {
+        setEmailError(null);
+      }
+    }
+    function checkFormPassword() {
+      if (!isValidPassword(signUpForm.password)) {
+        setPasswordError('Password is invalid');
+      } else {
+        setPasswordError(null);
+      }
+    }
+    checkForm();
+    checkFormPassword();
+  }, [signUpForm.email, signUpForm.password]);
+
+  const signMeUp = async (event) => {
     try {
       const res = await axios({
         method: 'POST',
@@ -36,21 +88,20 @@ if (signupSuccess === "true") {
         },
       });
     } catch (error) {
-        if (error.response) {
-          console.log(error.response);
-          console.log(error.response.data);
-          console.log(error.response.headers);
-        
-      };
+      if (error.response) {
+        console.log(error.response);
+        console.log(error.response.data);
+        console.log(error.response.headers);
+      }
     }
-
     setSignUpForm({
-        email: '',
-        password: '',
+      email: '',
+      password: '',
     });
-    setSignupSuccess("true");
+    setSignupSuccess('true');
     event.preventDefault();
   };
+
   function handleChange(event) {
     const { value, name } = event.target;
     setSignUpForm((prevNote) => ({
@@ -58,7 +109,15 @@ if (signupSuccess === "true") {
       [name]: value,
     }));
   }
-
+  const handleClick = () => {
+    if (emailError) {
+      setOpenEmail(true);
+    } else if (passwordError) {
+      setOpenPassword(true);
+    } else {
+      signMeUp();
+    }
+  };
   return (
     <>
       <Header removeToken={removeToken} token={token} />
@@ -68,6 +127,24 @@ if (signupSuccess === "true") {
       ) : (
         <Box display="flex" justifyContent="center" my="3rem">
           <FormControl>
+            <Snackbar
+              open={openEmail}
+              autoHideDuration={5000}
+              onClose={handleClose}
+            >
+              <Alert variant="filled" severity="error">
+                Please enter a valid email
+              </Alert>
+            </Snackbar>
+            <Snackbar
+              open={openPassword}
+              autoHideDuration={5000}
+              onClose={handleClose}
+            >
+              <Alert variant="filled" severity="error">
+                Password must be at least 8 characters long
+              </Alert>
+            </Snackbar>
             <InputLabel sx={{ mx: 2 }}>Enter your email</InputLabel>
             <Input
               onChange={handleChange}
@@ -93,7 +170,7 @@ if (signupSuccess === "true") {
             />
           </FormControl>
           <Box alignSelf="end" mx="1rem">
-            <Button variant="contained" onClick={logMeIn}>
+            <Button variant="contained" onClick={handleClick}>
               Submit
             </Button>
           </Box>

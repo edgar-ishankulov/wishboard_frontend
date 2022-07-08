@@ -22,6 +22,9 @@ function Login({ setToken }) {
   });
   const [loginError, setError] = useState(null);
   const [open, setOpen] = useState(false);
+  const [loginPassError, setLoginPassError] = useState(false);
+  const [notVerifiedError, setNotVerifiedError] = useState(false);
+
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -29,6 +32,8 @@ function Login({ setToken }) {
     }
 
     setOpen(false);
+    setLoginPassError(false);
+    setNotVerifiedError(false)
   };
 
   const logMeIn = async (event) => {
@@ -44,15 +49,21 @@ function Login({ setToken }) {
       setToken(res.data.access_token);
     } catch (error) {
       if (error.response.status == '401') {
-        navigate('/', { replace: true });
-        console.log(error.response);
+        // navigate('/', { replace: true });
+        setLoginPassError(true);
+        console.log(error.response.status);
+      }
+      if (error.response.status == '402') {
+        // navigate('/', { replace: true });
+        setNotVerifiedError(true);
+        console.log(error.response.status);
       }
     }
     setLoginForm({
       email: '',
       password: '',
     });
-    event.preventDefault();
+    if (event && event.preventDefault) { e.preventDefault(); }
   };
 
   function isValidEmail(email) {
@@ -63,7 +74,6 @@ function Login({ setToken }) {
     function checkForm() {
       if (!isValidEmail(loginForm.email)) {
         setError('Email is invalid');
-        console.log(loginError);
       } else {
         setError(null);
       }
@@ -93,9 +103,31 @@ function Login({ setToken }) {
 
       <Box display="flex" justifyContent="center" my="3rem">
         <FormControl>
-          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-            <Alert severity="error">Please input a valid email address</Alert>
+          <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+            <Alert variant="filled" severity="error">
+              Please input a valid email address
+            </Alert>
           </Snackbar>
+          <Snackbar
+            open={loginPassError}
+            autoHideDuration={5000}
+            onClose={handleClose}
+          >
+            <Alert variant="filled" severity="error">
+              Wrong email or password
+            </Alert>
+          </Snackbar>
+          <Snackbar
+            open={notVerifiedError}
+            autoHideDuration={5000}
+            onClose={handleClose}
+          >
+            <Alert variant="filled" severity="error">
+              Wrong email or password
+            </Alert>
+          </Snackbar>
+
+
           <InputLabel sx={{ mx: 2 }}>Enter your email</InputLabel>
           <Input
             onChange={handleChange}
