@@ -2,18 +2,22 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import Header from './components/Header';
 import Search from './components/Search';
 import ImageCard from './components/ImageCard';
 import Welcome from './components/Welcome';
-import useToken from './components/UseToken'
+import useToken from './components/UseToken';
+import { useSelector, useDispatch } from 'react-redux';
+import { setWord } from './redux/wordSlice';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5050';
 const savedImgInDbEndpoint = `${API_URL}/images`;
 
 const App = () => {
-  const [word, setWord] = useState('');
+  const dispatch = useDispatch();
+  const word = useSelector((state) => state.setWord.word);
+  // const [word, setWord] = useState('');
+
   const [images, setImages] = useState([]);
 
   const { token, removeToken, setToken } = useToken();
@@ -21,6 +25,7 @@ const App = () => {
   const handleSearchSubmit = async (event) => {
     event.preventDefault();
     try {
+      console.log(word);
       const res = await axios.get(`${API_URL}/new-image?query=${word}`);
       res.data.check = 'false';
       setImages([{ ...res.data, title: word }, ...images]);
@@ -28,10 +33,9 @@ const App = () => {
       console.log(err);
     }
 
-    setWord('');
+    dispatch(setWord(''));
   };
   const handleDeleteImage = (id) => {
-  
     setImages(images.filter((image) => image.id !== id));
   };
 
@@ -39,21 +43,31 @@ const App = () => {
     const image = images.filter((image) => image.id === id);
     const sepImage = image[0];
     sepImage.check = 'true';
-    console.log(sepImage)
+    console.log(sepImage);
     await axios({
-      method: "POST",
+      method: 'POST',
       url: savedImgInDbEndpoint,
       headers: {
-        Authorization: 'Bearer ' + token
+        Authorization: 'Bearer ' + token,
       },
-      data: sepImage})
+      data: sepImage,
+    });
     setImages([...images]);
   }
 
   return (
     <div>
-      <Header removeToken={removeToken} token={token} setToken={setToken} title="Images Gallery 2" version="1.0.0" />
-      <Search word={word} setWord={setWord} handleSubmit={handleSearchSubmit} />
+      <Header
+        removeToken={removeToken}
+        token={token}
+        setToken={setToken}
+        title="Images Gallery 2"
+        version="1.0.0"
+      />
+      <Search
+        // word={word} setWord={setWord}
+        handleSubmit={handleSearchSubmit}
+      />
       <Container className="mt-5">
         {images.length ? (
           <Row xs={1} md={2} lg={3}>
@@ -63,7 +77,7 @@ const App = () => {
                   image={image}
                   deleteImage={handleDeleteImage}
                   saveImageToDb={handleSaveImageToDb}
-                  setWord={setWord}
+                  // setWord={setWord}
                   token={token}
                 />
               </Col>
@@ -73,11 +87,8 @@ const App = () => {
           <Welcome />
         )}
       </Container>
-
-   
     </div>
   );
-
 };
 
 export default App;

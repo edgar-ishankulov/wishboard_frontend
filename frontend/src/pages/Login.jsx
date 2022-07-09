@@ -123,7 +123,7 @@ function Login({ setToken }) {
             onClose={handleClose}
           >
             <Alert variant="filled" severity="error">
-              Wrong email or password
+              Not authorized. Please verify your email
             </Alert>
           </Snackbar>
 

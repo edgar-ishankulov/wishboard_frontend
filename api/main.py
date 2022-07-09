@@ -70,7 +70,7 @@ def images():
 
     if request.method == "GET":
         db = client["images-db"]
-        imagesCollection = db["users"]
+        usersCollection = db["users"]
         identity = get_jwt_identity()
         userImages = dumps(db["users"].find({"email": identity}, {"images": 1, "_id": 0} ))
         print(userImages)
@@ -87,9 +87,10 @@ def images():
 
     if request.method == "DELETE":
         db = client["images-db"]
-        imagesCollection = db["imagesCollection"]
+        usersCollection = db["users"]
+        identity = get_jwt_identity()
         img = request.get_json()
-        imagesCollection.delete_one(img)
+        usersCollection.update_one({"email": identity}, { "$pull": {'images': img} })
         return "Image Deleted"
 
 @app.after_request

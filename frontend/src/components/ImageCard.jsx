@@ -5,16 +5,22 @@ import { useState, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 const ImageCard = ({ image, deleteImage, saveImageToDb, token }) => {
-  const [saveBtn, setSaveBtn] = useState(image.check);
+  const [saveBtn, setSaveBtn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     function imgCheck() {
-      return setSaveBtn(image.check);
+      if (image.check == "true") {
+        setSaveBtn(true);
+      }
+      if (image.check == "false") {
+        setSaveBtn(false)
+      }
     }
     imgCheck();
   }, [setSaveBtn]);
-  const checkForToken = () => {
+
+  const checkForTokenAndSave = () => {
     if (token) {
       saveImageToDb(image.id);
       setSaveBtn(image.check);
@@ -22,7 +28,6 @@ const ImageCard = ({ image, deleteImage, saveImageToDb, token }) => {
       return navigate('/profile', { replace: true });
     }
   };
-
   return (
     <div>
       <Card>
@@ -47,15 +52,15 @@ const ImageCard = ({ image, deleteImage, saveImageToDb, token }) => {
 
             <LoadingButton
               onClick={() => {
-                checkForToken();
+                checkForTokenAndSave();
                 // saveImageToDb(image.id)
                 // setSaveBtn(image.check)
               }}
               size="small"
-              disabled={image.check == 'true' ? true : false}
+              disabled={image.check == "true" ? true : false}
               variant="contained"
             >
-              {image.check == 'true' ? 'Saved' : 'Save'}
+              {image.check == "true" ? 'Saved' : 'Save'}
             </LoadingButton>
           </Container>
         </Card.Body>

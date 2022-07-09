@@ -2,8 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import { Button, Box } from '@mui/material';
+import { useSelector, useDispatch } from 'react-redux'
+import { setWord } from '../redux/wordSlice';
 
-const Search = ({ handleSubmit, word, setWord }) => {
+const Search = ({ handleSubmit }) => {
+  const word = useSelector((state) => state.setWord.word)
+  const dispatch = useDispatch()
+
   return (
     <Container className="">
       <Row className="justify-content-center">
@@ -13,7 +18,7 @@ const Search = ({ handleSubmit, word, setWord }) => {
               <Form.Control
                 type="text"
                 value={word}
-                onChange={(event) => setWord(event.target.value)}
+                onChange={(event) => dispatch(setWord(event.target.value))}
                 placeholder="Search for new images"
               />
               <Box alignSelf={'center'} ml={'1rem'}>
