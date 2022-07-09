@@ -3,9 +3,10 @@ import axios from 'axios';
 import { Container, Row, Col } from 'react-bootstrap';
 import ImageCard from '../components/ImageCard';
 import Welcome from '../components/Welcome';
-
+import { useSelector, useDispatch } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/custom.scss';
+import { imgLengthCheck } from '../redux/imgLengthSlice';
 
 import Header from '../components/Header';
 
@@ -13,8 +14,12 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5050';
 const savedImgInDbEndpoint = `${API_URL}/images`;
 
 const Wishboard = ({ token, setToken }) => {
-  const [profileData, setProfileData] = useState(null);
+  const dispatch = useDispatch();
+  const imgLength = useSelector((state) => state.imgLengthCheck.length)
   const [images, setImages] = useState([]);
+
+  dispatch(imgLengthCheck(images.length))
+  // console.log(imgLength);
 
   useEffect(() => {
     async function getSavedImages() {
@@ -26,7 +31,7 @@ const Wishboard = ({ token, setToken }) => {
             Authorization: 'Bearer ' + token,
           },
         });
-        console.log(res.data[0])
+        // console.log(res.data[0]);
         setImages(res.data[0].images.reverse() || []);
       } catch (error) {
         console.log(error);
@@ -39,7 +44,7 @@ const Wishboard = ({ token, setToken }) => {
     const removeImage = async () => {
       try {
         const res = await axios({
-          method: "DELETE",
+          method: 'DELETE',
           url: `${API_URL}/images`,
           headers: {
             Authorization: 'Bearer ' + token,
