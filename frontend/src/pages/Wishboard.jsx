@@ -8,8 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/custom.scss';
 import { imgLengthCheck } from '../redux/imgLengthSlice';
 
-import Header from '../components/Header';
-
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5050';
 const savedImgInDbEndpoint = `${API_URL}/images`;
 
@@ -18,9 +16,7 @@ const Wishboard = ({ token, setToken }) => {
   const imgLength = useSelector((state) => state.imgLengthCheck.length)
   const [images, setImages] = useState([]);
 
-  dispatch(imgLengthCheck(images.length))
-  // console.log(imgLength);
-
+  
   useEffect(() => {
     async function getSavedImages() {
       try {
@@ -31,7 +27,7 @@ const Wishboard = ({ token, setToken }) => {
             Authorization: 'Bearer ' + token,
           },
         });
-        // console.log(res.data[0]);
+        
         setImages(res.data[0].images.reverse() || []);
       } catch (error) {
         console.log(error);
@@ -58,6 +54,17 @@ const Wishboard = ({ token, setToken }) => {
     removeImage();
     setImages(images.filter((image) => image.id !== id));
   };
+
+useEffect(() => {
+const dispatchImagesLength = () => {
+  dispatch(imgLengthCheck(images.length))
+  
+}
+dispatchImagesLength()
+}, [images ])
+
+
+
   return (
     <div>
       <Container className="mt-5">

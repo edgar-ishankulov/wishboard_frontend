@@ -11,7 +11,6 @@ import { Link } from 'react-router-dom';
 function Profile(images) {
   const { token, removeToken, setToken } = useToken();
   const imgLengthCheck = useSelector((state) => state.imgLengthCheck.length);
-  console.log(imgLengthCheck);
 
   return (
     <div>
@@ -24,14 +23,14 @@ function Profile(images) {
   label="Search"
   icon={<SearchIcon />}
   size="small"
-  component="a"
   href="#basic-chip"
   variant="outlined"
   clickable
 /></Link> for images and save them to your Wishboard</strong>
           </Alert>
         </Container>
-      ) : (
+        
+      ) : ""}
         <div>
           {!token && token != '' && token !== undefined ? (
             <Login setToken={setToken} />
@@ -39,7 +38,7 @@ function Profile(images) {
             <Wishboard token={token} setToken={setToken} />
           )}
         </div>
-      )}
+      )
     </div>
   );
 }

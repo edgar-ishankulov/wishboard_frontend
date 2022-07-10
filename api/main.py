@@ -23,6 +23,8 @@ from itsdangerous import SignatureExpired, URLSafeTimedSerializer
 load_dotenv(dotenv_path="./.env.local")
 
 UNSPLASH_URL = "https://api.unsplash.com/photos/random/"
+# UNSPLASH_URL = "https://api.unsplash.com/search/photos/"
+
 FRONTEND_HOST = os.environ.get("FRONTEND_HOST")
 DB_HOST = os.environ.get("DB_HOST")
 UNSPLASH_KEY = os.environ.get("UNSPLASH_KEY", "")
@@ -53,14 +55,33 @@ app.config["MAIL_PASSWORD"] = "fdbpkuqonvbhjlhm" #nosec
 
 jwt = JWTManager(app)
 
+# @app.route("/new-image")
+# def new_image():
+#     word = request.args.get("query")
+#     headers = {"Authorization": "Client-ID " + UNSPLASH_KEY, "Accept-Version": "v1"}
+#     params = {"query": word, "order_by": "latest"}
+#     response = requests.get(url=UNSPLASH_URL, headers=headers, params=params)
+#     data = response.json()
+#     resultsArray = list(data['results'])
+#     print(len(resultsArray))
+#     if len(resultsArray) == 0:
+#         return 'No valid results', 400
+#     return dumps(data['results']), 200
+
 @app.route("/new-image")
 def new_image():
     word = request.args.get("query")
     headers = {"Authorization": "Client-ID " + UNSPLASH_KEY, "Accept-Version": "v1"}
-    params = {"query": word}
+    params = {"query": word, "count": 30}
     response = requests.get(url=UNSPLASH_URL, headers=headers, params=params)
     data = response.json()
-    return data
+    resultsArray = list(data)
+    print(resultsArray)
+    print(len(resultsArray))
+    if len(resultsArray) < 2:
+        return 'No valid results', 400
+    return dumps(data), 200
+
 
 
 @app.route("/images", methods=["GET", "POST", "DELETE"])
@@ -72,18 +93,24 @@ def images():
         db = client["images-db"]
         usersCollection = db["users"]
         identity = get_jwt_identity()
-        userImages = dumps(db["users"].find({"email": identity}, {"images": 1, "_id": 0} ))
-        print(userImages)
+        userImages = dumps(usersCollection.find({"email": identity}, {"images": 1, "_id": 0} ))
         return userImages
 
     if request.method == "POST":
         db = client["images-db"]
         usersCollection = db["users"]
         identity = get_jwt_identity()
+        alreadySaved = False
         img = request.get_json()
-        print()
-        usersCollection.update_one({"email": identity}, { "$push": {'images': img} })
-        return "Image saved"
+        imgId = img['id']
+        userImages = list(usersCollection.find({'$and': [ {"email":identity}, {"images.id": imgId} ]}, {"images.id":1}))
+        if (len(userImages) == 0):
+            usersCollection.update_one({"email": identity}, { "$push": {'images': img} })
+            alreadySaved = "False"
+            return alreadySaved, 201
+        if (len(userImages)>0):
+            alreadySaved = "True"
+            return alreadySaved, 202
 
     if request.method == "DELETE":
         db = client["images-db"]

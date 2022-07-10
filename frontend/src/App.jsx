@@ -9,6 +9,8 @@ import Welcome from './components/Welcome';
 import useToken from './components/UseToken';
 import { useSelector, useDispatch } from 'react-redux';
 import { setWord } from './redux/wordSlice';
+import { alreadySaved } from './redux/alreadySavedSlice';
+import { Alert, Icon } from '@mui/material';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5050';
 const savedImgInDbEndpoint = `${API_URL}/images`;
@@ -16,7 +18,17 @@ const savedImgInDbEndpoint = `${API_URL}/images`;
 const App = () => {
   const dispatch = useDispatch();
   const word = useSelector((state) => state.setWord.word);
-  // const [word, setWord] = useState('');
+  const alreadySavedState = useSelector(
+    (state) => state.alreadySaved.alreadySaved
+  );
+  const [badQuery, setBadQuery] = useState(false);
+
+  useEffect(() => {
+    function handleBadQuery() {
+      return;
+    }
+    handleBadQuery();
+  }, [badQuery]);
 
   const [images, setImages] = useState([]);
 
@@ -25,26 +37,26 @@ const App = () => {
   const handleSearchSubmit = async (event) => {
     event.preventDefault();
     try {
-      console.log(word);
       const res = await axios.get(`${API_URL}/new-image?query=${word}`);
       res.data.check = 'false';
-      setImages([{ ...res.data, title: word }, ...images]);
-    } catch (err) {
-      console.log(err);
+      setImages([...res.data]);
+      setBadQuery(false);
+    } catch (error) {
+      if (error.response.status == 400) {
+        setBadQuery(true);
+      }
     }
-
     dispatch(setWord(''));
   };
   const handleDeleteImage = (id) => {
     setImages(images.filter((image) => image.id !== id));
   };
-
+  
   async function handleSaveImageToDb(id) {
     const image = images.filter((image) => image.id === id);
     const sepImage = image[0];
     sepImage.check = 'true';
-    console.log(sepImage);
-    await axios({
+    const res = await axios({
       method: 'POST',
       url: savedImgInDbEndpoint,
       headers: {
@@ -52,6 +64,9 @@ const App = () => {
       },
       data: sepImage,
     });
+    if (res.data == 'True') {
+      dispatch(alreadySaved(true));
+    }
     setImages([...images]);
   }
 
@@ -68,6 +83,7 @@ const App = () => {
         // word={word} setWord={setWord}
         handleSubmit={handleSearchSubmit}
       />
+        {badQuery? <Alert sx={{display: 'flex', justifyContent: 'center', mt:"3rem" }} severity="error" >We couldn't find anything. Please modify your search query and try again.</Alert> : ''}
       <Container className="mt-5">
         {images.length ? (
           <Row xs={1} md={2} lg={3}>

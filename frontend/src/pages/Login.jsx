@@ -11,10 +11,12 @@ import {
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import '../css/custom.css';
+import { useSelector, useDispatch } from 'react-redux';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5050';
 
 function Login({ setToken }) {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState({
     email: '',
@@ -35,6 +37,8 @@ function Login({ setToken }) {
     setLoginPassError(false);
     setNotVerifiedError(false)
   };
+
+
 
   const logMeIn = async (event) => {
     try {
