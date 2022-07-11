@@ -4,6 +4,7 @@ import {
   FormControl,
   InputLabel,
   Input,
+  OutlinedInput,
   Button,
   Box,
   Snackbar,
@@ -12,11 +13,12 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import '../css/custom.css';
 import { useSelector, useDispatch } from 'react-redux';
+import { Container } from 'react-bootstrap';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5050';
 
 function Login({ setToken }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState({
     email: '',
@@ -27,7 +29,6 @@ function Login({ setToken }) {
   const [loginPassError, setLoginPassError] = useState(false);
   const [notVerifiedError, setNotVerifiedError] = useState(false);
 
-
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -35,10 +36,8 @@ function Login({ setToken }) {
 
     setOpen(false);
     setLoginPassError(false);
-    setNotVerifiedError(false)
+    setNotVerifiedError(false);
   };
-
-
 
   const logMeIn = async (event) => {
     try {
@@ -67,7 +66,9 @@ function Login({ setToken }) {
       email: '',
       password: '',
     });
-    if (event && event.preventDefault) { e.preventDefault(); }
+    if (event && event.preventDefault) {
+      e.preventDefault();
+    }
   };
 
   function isValidEmail(email) {
@@ -105,8 +106,8 @@ function Login({ setToken }) {
     <>
       <h2 className="d-flex justify-content-center">Please Log In</h2>
 
-      <Box display="flex" justifyContent="center" my="3rem">
-        <FormControl>
+      <Container className="d-flex justify-content-center my-3">
+        <FormControl sx={{ width: 400 }}>
           <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
             <Alert variant="filled" severity="error">
               Please input a valid email address
@@ -131,9 +132,10 @@ function Login({ setToken }) {
             </Alert>
           </Snackbar>
 
-
           <InputLabel sx={{ mx: 2 }}>Enter your email</InputLabel>
-          <Input
+          <OutlinedInput
+          label="Enter your email"
+          required={true}
             onChange={handleChange}
             type="email"
             text={loginForm.email}
@@ -143,42 +145,51 @@ function Login({ setToken }) {
             sx={{ mx: 2 }}
           />
         </FormControl>
+      </Container>
 
-        <FormControl>
+      <Container className="d-flex justify-content-center my-3">
+        <FormControl sx={{ width: 400 }}>
           <InputLabel sx={{ mx: 2 }}>Input your password</InputLabel>
-          <Input
+          <OutlinedInput
+          required={true}
+          label="Input your password"
             onChange={handleChange}
             type="password"
             text={loginForm.password}
             name="password"
-            placeholder="password"
+            placeholder="Password"
             value={loginForm.password}
             sx={{ mx: 2 }}
           />
         </FormControl>
-        <Box alignSelf="end" mx="1rem">
-          <Button
-            variant="contained"
-            onClick={() => {
-              handleClick();
-              console.log('');
-            }}
-          >
-            Submit
-          </Button>
-        </Box>
-      </Box>
-      <Box display={'grid'} justifyContent={'center'}>
-        <h3>Don't have an account?</h3>
+      </Container>
+      <Container className="d-flex justify-content-center my-3">
 
-        <Link to="/signup" style={{ textDecoration: 'none' }}>
-          <Box display={'flex'} justifyContent={'center'}>
-            <Button variant="outlined" size="small">
-              Signup
-            </Button>
-          </Box>
-        </Link>
-      </Box>
+        <Button
+        type='submit'
+          variant="contained"
+          size='small'
+          onClick={() => {
+            handleClick();
+            console.log('');
+          }}
+        >
+          Submit
+        </Button>
+
+      </Container>
+      <Container className="d-flex justify-content-center mt-5">
+
+      <h3>Don't have an account?</h3>
+      </Container>
+<Container className="d-flex justify-content-center ">
+
+      <Link to="/signup" style={{ textDecoration: 'none' }}>
+        <Button variant="outlined" size="small">
+          Signup
+        </Button>
+      </Link>
+</Container>
     </>
   );
 }

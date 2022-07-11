@@ -12,8 +12,11 @@ export default defineConfig({
   },
   
   server: { 
-    port: 3000,
-    watch: { 
+    port: 80,
+    // hmr: {
+    //   clientPort: 443
+    // },
+       watch: { 
       usePolling: true } },
   plugins: [
     inject({

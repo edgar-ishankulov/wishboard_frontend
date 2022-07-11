@@ -1,7 +1,7 @@
 import { Card, Container } from 'react-bootstrap';
 import '../css/custom.css';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Snackbar, Alert } from '@mui/material';
+import { Snackbar, Alert, Link } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -61,15 +61,8 @@ const ImageCard = ({ image, deleteImage, saveImageToDb, token }) => {
     <div>
       <Card>
         <Card.Img className="card-image d-flex" src={image.urls.small} />
-        <Card.Body className="card-img-overlay d-flex align-items-end">
-          <Container>
-            <Card.Title className="image-card-text">
-              {image.title?.toUpperCase()}
-            </Card.Title>
-            <Card.Text className="image-card-text">
-              {image.description || image.alt_description}
-            </Card.Text>
-
+        <Container>
+          <Card.Body className="card-img-overlay d-flex align-items-end ms-2">
             <LoadingButton
               variant="contained"
               sx={{ mr: 2 }}
@@ -89,8 +82,29 @@ const ImageCard = ({ image, deleteImage, saveImageToDb, token }) => {
             >
               {image.check == 'true' ? 'Saved' : 'Save'}
             </LoadingButton>
-          </Container>
-        </Card.Body>
+
+            <Container>
+              <Card.Title className="image-card-text">
+                {image.title?.toUpperCase()}
+              </Card.Title>
+              <Card.Text className="image-card-text fs-5">
+                Photo by
+                <Link
+                  href={
+                    image.links.html +
+                    '?utm_source=Wishboard&utm_medium=referral'
+                  }
+                  target="_blank"
+                >
+                  {' ' + image.user.name + ' '}
+                </Link>
+                on
+                <Link href='https://unsplash.com/?utm_source=Wishboard&utm_medium=referral'> Unsplash</Link>
+              </Card.Text>
+            </Container>
+          </Card.Body>
+        </Container>
+
         <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
           <Alert variant="filled" severity="info">
             This image is already saved in your Wishboard

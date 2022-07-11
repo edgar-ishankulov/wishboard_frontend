@@ -136,10 +136,7 @@ def refresh_expiring_jwts(response):
     except (RuntimeError, KeyError):
         # Case where there is not a valid JWT. Just return the original respone
         return response
-
-
-
-
+        
 # @app.route("/profile")
 # @jwt_required()
 # def my_profile():
@@ -183,22 +180,27 @@ def signup():
         db = client["images-db"]
         usersCollection = db["users"]
         email = request_data['email']
-        emailToken = serializer.dumps(email)
+        name = request_data['name']
+        userInDb = usersCollection.find_one({"email": email})
+        if not userInDb:
+            emailToken = serializer.dumps(email)
+            msg = Message('Confirm Email', sender='edgar.ishankulov@gmail.com', recipients=[email])
+            link = url_for('confirm_email', emailToken=emailToken, _external=True)
+            msg.body = 'Hi {}! Thank you for using Wishboard. Please follow this link to verify your account {}'.format(name,link)
+            mail.send(msg)
 
-        msg = Message('Confirm Email', sender='edgar.ishankulov@gmail.com', recipients=[email])
-        link = url_for('confirm_email', emailToken=emailToken, _external=True)
-        msg.body = 'Your link is {}'.format(link)
-        mail.send(msg)
-
-        password = request_data['password']
-        user = {
-        'email': email, 
-        'password': password,
-        'is_verified': False
-        }
+            password = request_data['password']
+            user = {
+            'name': name,
+            'email': email, 
+            'password': password,
+            'is_verified': False
+            }
     
-        usersCollection.insert_one(user)
-        return "User signed up successfully with token" + emailToken
+            usersCollection.insert_one(user)
+            return "User signed up successfully with token" + emailToken, 200
+        if email == userInDb['email']:
+            return "User already exists", 403
 
 @app.route("/confirm_email/<emailToken>")
 def confirm_email(emailToken):
@@ -212,7 +214,7 @@ def confirm_email(emailToken):
             usersCollection.find_one_and_update({'email': email}, { '$set': {'is_verified': True}})
             # return redirect(FRONTEND_HOST+"/profile", )
 
-            return redirect("http://localhost:3000/profile", )
+            return redirect(FRONTEND_HOST, )
         #find email and change is_verified to true
     except SignatureExpired:
         return "The token expired"
@@ -221,4 +223,4 @@ def confirm_email(emailToken):
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5050) #nosec
-    # app.run(host="192.168.0.171", port=5050) #nosec
+    # app.run(host="192.168.0.171", port=8080) #nosec
