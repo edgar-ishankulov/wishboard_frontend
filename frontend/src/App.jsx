@@ -53,22 +53,27 @@ const App = () => {
   };
   
   async function handleSaveImageToDb(id) {
-    const image = images.filter((image) => image.id === id);
-    const sepImage = image[0];
-    sepImage.check = 'true';
-    const res = await axios({
-      method: 'POST',
-      url: savedImgInDbEndpoint,
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
-      data: sepImage,
-    });
-    if (res.data == 'True') {
-      dispatch(alreadySaved(true));
+    try {
+      const image = images.filter((image) => image.id === id);
+      const sepImage = image[0];
+      sepImage.check = 'true';
+      const res = await axios({
+        method: 'POST',
+        url: savedImgInDbEndpoint,
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+        data: sepImage,
+      });
+      if (res.data == 'True') {
+        dispatch(alreadySaved(true));
+      }
+      setImages([...images]);
     }
-    setImages([...images]);
-  }
+    catch (error) {
+console.log(error.response)
+    }
+    }
 
   return (
     <div>

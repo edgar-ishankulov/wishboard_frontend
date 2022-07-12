@@ -14,6 +14,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../css/custom.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { Container } from 'react-bootstrap';
+import { loginInfoEmail } from '../redux/loginInfoSlice';
+import { loginInfoName } from '../redux/loginInfoSlice';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5050';
 
@@ -28,6 +30,10 @@ function Login({ setToken }) {
   const [open, setOpen] = useState(false);
   const [loginPassError, setLoginPassError] = useState(false);
   const [notVerifiedError, setNotVerifiedError] = useState(false);
+  const loginEmail = useSelector((state) => state.loginInfo.email);
+  const loginName = useSelector(
+    (state) => state.loginInfo.name
+  );
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -49,6 +55,8 @@ function Login({ setToken }) {
           password: loginForm.password,
         },
       });
+      dispatch(loginInfoEmail(res.data.user.email));
+      dispatch(loginInfoName(res.data.user.name));
       setToken(res.data.access_token);
     } catch (error) {
       if (error.response.status == '401') {
@@ -62,6 +70,7 @@ function Login({ setToken }) {
         console.log(error.response.status);
       }
     }
+
     setLoginForm({
       email: '',
       password: '',
@@ -134,8 +143,8 @@ function Login({ setToken }) {
 
           <InputLabel sx={{ mx: 2 }}>Enter your email</InputLabel>
           <OutlinedInput
-          label="Enter your email"
-          required={true}
+            label="Enter your email"
+            required={true}
             onChange={handleChange}
             type="email"
             text={loginForm.email}
@@ -151,8 +160,8 @@ function Login({ setToken }) {
         <FormControl sx={{ width: 400 }}>
           <InputLabel sx={{ mx: 2 }}>Input your password</InputLabel>
           <OutlinedInput
-          required={true}
-          label="Input your password"
+            required={true}
+            label="Input your password"
             onChange={handleChange}
             type="password"
             text={loginForm.password}
@@ -164,32 +173,27 @@ function Login({ setToken }) {
         </FormControl>
       </Container>
       <Container className="d-flex justify-content-center my-3">
-
         <Button
-        type='submit'
+          type="submit"
           variant="contained"
-          size='small'
+          size="small"
           onClick={() => {
             handleClick();
-            console.log('');
           }}
         >
           Submit
         </Button>
-
       </Container>
       <Container className="d-flex justify-content-center mt-5">
-
-      <h3>Don't have an account?</h3>
+        <h3>Don't have an account?</h3>
       </Container>
-<Container className="d-flex justify-content-center ">
-
-      <Link to="/signup" style={{ textDecoration: 'none' }}>
-        <Button variant="outlined" size="small">
-          Signup
-        </Button>
-      </Link>
-</Container>
+      <Container className="d-flex justify-content-center ">
+        <Link to="/signup" style={{ textDecoration: 'none' }}>
+          <Button variant="outlined" size="small">
+            Signup
+          </Button>
+        </Link>
+      </Container>
     </>
   );
 }

@@ -1,12 +1,17 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { Button, Box } from '@mui/material';
+import { Button, Box, Paper } from '@mui/material';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 // import { ReactComponent as Logo } from '../images/logo.svg';
 import Logo from '../images/logo.png';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import { loginInfoEmail } from '../redux/loginInfoSlice';
+import { loginInfoName } from '../redux/loginInfoSlice';
+import { useSelector, useDispatch } from 'react-redux';
+
+
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5050';
 
@@ -25,6 +30,13 @@ theme.typography.h3 = {
 
 
 const Header = ({ title, removeToken, token }) => {
+const dispatch = useDispatch()
+const loginEmail = useSelector((state) => state.loginInfo.email);
+const loginName = useSelector(
+  (state) => state.loginInfo.name
+);
+
+
   const logMeOut = async () => {
     try {
       await axios({
@@ -32,6 +44,9 @@ const Header = ({ title, removeToken, token }) => {
         url: `${API_URL}/logout`,
       });
       {
+        dispatch(loginInfoEmail(''));
+        dispatch(loginInfoName(''));
+  
         removeToken();
       }
     } catch {
@@ -66,7 +81,8 @@ const Header = ({ title, removeToken, token }) => {
             </Link>
           </Col>
 
-          <Col className=" d-inline text-center col-lg-4 justify-content-end align-self-center align-middle mt-3 mt-md-2">
+          <Col className=" d-inline text-center col-lg-4 justify-content-end align-self-center mt-3 mt-md-2">
+            <Container>
           <ThemeProvider theme={theme}>
             <Link to="/profile" style={{ textDecoration: 'none' }}>
               <Button
@@ -100,8 +116,17 @@ const Header = ({ title, removeToken, token }) => {
               </Button>
             )}
             </ThemeProvider>
+            </Container>
           </Col>
         </Row>
+            {/* {loginName !== '' ? 
+            <Container className='position-absolute justify-content-end align-self-start '>
+              <Paper elevation={5} sx={{display: 'inline-block', paddingX:2, paddingY:0.5, position: 'relative', top: 20}}>
+            <h5>Hi {loginName}! Wish and visualize for a brighter tomorrow!</h5>
+            </Paper>
+            </Container> : ''
+            } */}
+
       </Container>
     </>
   );

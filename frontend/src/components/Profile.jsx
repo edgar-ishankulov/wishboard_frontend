@@ -8,6 +8,8 @@ import {
   Link as hLink,
   Chip,
   Snackbar,
+  Divider,
+  Paper
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Container } from 'react-bootstrap';
@@ -17,6 +19,10 @@ import { accExists } from '../redux/accExistsSlice';
 
 function Profile() {
   const dispatch = useDispatch();
+  const loginName = useSelector(
+    (state) => state.loginInfo.name
+  );
+  
   const verificationEmailSent = useSelector(
     (state) => state.verificationEmail.verificationEmail
   );
@@ -85,6 +91,16 @@ function Profile() {
             ) : (
               ''
             )}
+                  <Divider  component="li" sx={{ display:'flex', justifyContent: 'center'}}/>
+
+                  {loginName !== '' ? 
+            <Container className='position-absolute justify-content-end align-self-start' >
+              <Paper elevation={3} sx={{display: 'inline-block', paddingX:2, paddingY:0.5, position: 'relative', top: -20 }}>
+            <h5 className='pt-2'>Hi {loginName}! Wish and visualize for a brighter tomorrow!</h5>
+            </Paper>
+            </Container> : ''
+            }
+
             <Wishboard token={token} setToken={setToken} />
           </>
         )}

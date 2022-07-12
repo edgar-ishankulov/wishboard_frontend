@@ -44,9 +44,9 @@ const Register = ({ token, removeToken }) => {
       return;
     }
 
+    setOpenName(false)
     setOpenEmail(false);
     setOpenPassword(false);
-    setEmailError(false)
   };
   function isValidName(name) {
     if (name == undefined || name == null) {
@@ -169,7 +169,7 @@ const Register = ({ token, removeToken }) => {
             <FormControl sx={{ width: 400 }}>
             <Snackbar
                 open={openName}
-                autoHideDuration={5000}
+                autoHideDuration={4000}
                 onClose={handleCloseReg}
               >
                 <Alert variant="filled" severity="error">
@@ -178,7 +178,7 @@ const Register = ({ token, removeToken }) => {
               </Snackbar>
               <Snackbar
                 open={openEmail}
-                autoHideDuration={5000}
+                autoHideDuration={4000}
                 onClose={handleCloseReg}
               >
                 <Alert variant="filled" severity="error">
@@ -187,7 +187,7 @@ const Register = ({ token, removeToken }) => {
               </Snackbar>
               <Snackbar
                 open={openPassword}
-                autoHideDuration={5000}
+                autoHideDuration={4000}
                 onClose={handleCloseReg}
               >
                 <Alert variant="filled" severity="error">

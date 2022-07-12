@@ -1,6 +1,7 @@
 import email
 import os
 import json
+import bcrypt
 from dotenv import load_dotenv
 import requests
 from flask_cors import CORS
@@ -23,7 +24,6 @@ from itsdangerous import SignatureExpired, URLSafeTimedSerializer
 load_dotenv(dotenv_path="./.env.local")
 
 UNSPLASH_URL = "https://api.unsplash.com/photos/random/"
-# UNSPLASH_URL = "https://api.unsplash.com/search/photos/"
 
 FRONTEND_HOST = os.environ.get("FRONTEND_HOST")
 DB_HOST = os.environ.get("DB_HOST")
@@ -40,33 +40,17 @@ app = Flask(__name__)
 CORS(app)
 serializer = URLSafeTimedSerializer("SecretKey")
 app.config["DEBUG"] = DEBUG
-app.config["JWT_SECRET_KEY"] = "jhsdkldshljashLJHDFJLfhlssa123!!!" #nosec
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=3)
+app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY")
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=12)
 
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
 app.config["MAIL_USE_TLS"] = False
-app.config["MAIL_USERNAME"] = "edgar.ishankulov@gmail.com"
-app.config["MAIL_PASSWORD"] = "fdbpkuqonvbhjlhm" #nosec
-
-
-
+app.config["MAIL_USERNAME"] = os.environ("MAIL_USERNAME")
+app.config["MAIL_PASSWORD"] = os.environ("MAIL_PASSWORD")
 
 jwt = JWTManager(app)
-
-# @app.route("/new-image")
-# def new_image():
-#     word = request.args.get("query")
-#     headers = {"Authorization": "Client-ID " + UNSPLASH_KEY, "Accept-Version": "v1"}
-#     params = {"query": word, "order_by": "latest"}
-#     response = requests.get(url=UNSPLASH_URL, headers=headers, params=params)
-#     data = response.json()
-#     resultsArray = list(data['results'])
-#     print(len(resultsArray))
-#     if len(resultsArray) == 0:
-#         return 'No valid results', 400
-#     return dumps(data['results']), 200
 
 @app.route("/new-image")
 def new_image():
@@ -81,8 +65,6 @@ def new_image():
     if len(resultsArray) < 2:
         return 'No valid results', 400
     return dumps(data), 200
-
-
 
 @app.route("/images", methods=["GET", "POST", "DELETE"])
 @jwt_required()
@@ -134,18 +116,8 @@ def refresh_expiring_jwts(response):
                 response.data = json.dumps(data)
         return response
     except (RuntimeError, KeyError):
-        # Case where there is not a valid JWT. Just return the original respone
         return response
         
-# @app.route("/profile")
-# @jwt_required()
-# def my_profile():
-#     response_body = {
-#         "name": "Nagato",
-#         "about": "Hello! I'm a full stack developer that loves python and javascript",
-#     }
-#     return response_body
-
 @app.route("/logout", methods=["POST"])
 def logout():
     response = jsonify({"msg": "logout successful"})
@@ -158,18 +130,21 @@ def create_token():
     usersCollection = db["users"]
     email = request.json.get("email", None)
     password = request.json.get("password", None)
-    user = usersCollection.find_one({"email": email})
+    salt = bcrypt.gensalt()
+    user = usersCollection.find_one({"email": email}, {'_id': 0})
     if user == None:
         return {"msg": "Wrong email or password"}, 401
-    if email != user['email'] or password != user['password']: #nosec
+    if email != user['email'] or bcrypt.checkpw(password.encode('utf-8'), user['password']) != True: #nosec
+        print (bcrypt.checkpw(password.encode('utf-8'), user['password']))
         return {"msg": "Wrong email or password"}, 401
     if (user['is_verified'] == False):
         return {"msg": "Account not verified"}, 402
 
     additional_claims = {"user": email}
     access_token = create_access_token(identity=email, additional_claims=additional_claims)
-    response = {"access_token": access_token}
-    return response
+    response = {"access_token": access_token, "user": user}
+    print(response)
+    return dumps(response)
 
 mail = Mail(app)
 
@@ -188,8 +163,11 @@ def signup():
             link = url_for('confirm_email', emailToken=emailToken, _external=True)
             msg.body = 'Hi {}! Thank you for using Wishboard. Please follow this link to verify your account {}'.format(name,link)
             mail.send(msg)
+            salt = bcrypt.gensalt()
+            password = bcrypt.hashpw(request_data['password'].encode('utf-8'), salt)
+            passwordAsString = password.decode('utf-8')
+            print(password)
 
-            password = request_data['password']
             user = {
             'name': name,
             'email': email, 
@@ -212,10 +190,7 @@ def confirm_email(emailToken):
         user = usersCollection.find_one({'email': email})
         if (email == user['email']):
             usersCollection.find_one_and_update({'email': email}, { '$set': {'is_verified': True}})
-            # return redirect(FRONTEND_HOST+"/profile", )
-
             return redirect(FRONTEND_HOST, )
-        #find email and change is_verified to true
     except SignatureExpired:
         return "The token expired"
 

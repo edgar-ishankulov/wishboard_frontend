@@ -4,6 +4,7 @@ import imgLengthReducer from './imgLengthSlice'
 import alreadySavedReducer from './alreadySavedSlice';
 import verificationEmailReducer from './verificationEmailSlice';
 import accExistsReducer from './accExistsSlice';
+import loginInfoReducer from './loginInfoSlice';
 
 const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
     imgLengthCheck: imgLengthReducer,
     alreadySaved: alreadySavedReducer,
     verificationEmail: verificationEmailReducer,
-    accExists: accExistsReducer
+    accExists: accExistsReducer,
+    loginInfo: loginInfoReducer
   },
 });
 
