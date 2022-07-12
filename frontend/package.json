@@ -49,7 +49,7 @@
   },
   "description": "This project is made with Vite at the frontend and Python at the backend",
   "main": "index.jsx",
-  "author": "",
+  "author": "Edgar Ishankulov",
   "license": "ISC",
   "devDependencies": {
     "@rollup/plugin-inject": "^4.0.4",
