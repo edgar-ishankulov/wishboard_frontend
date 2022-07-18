@@ -4,6 +4,7 @@ import { Container, Row, Col, Form } from 'react-bootstrap';
 import { Button, Box } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux'
 import { setWord } from '../redux/wordSlice';
+import SearchIcon from '@mui/icons-material/Search';
 
 const Search = ({ handleSubmit }) => {
   const word = useSelector((state) => state.setWord.word)
@@ -22,7 +23,7 @@ const Search = ({ handleSubmit }) => {
                 placeholder="Search for new images"
               />
               <Box alignSelf={'center'} ml={'1rem'}>
-                <Button variant="contained" size="medium" type="submit" sx={{ fontSize: "13px"}}>
+                <Button startIcon={<SearchIcon />} variant="contained" size="medium" type="submit" sx={{ fontSize: "13px"}}>
                   Search
                 </Button>
               </Box>

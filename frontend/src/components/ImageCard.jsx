@@ -6,6 +6,10 @@ import { useState, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { alreadySaved } from '../redux/alreadySavedSlice';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, IconButton } from '@mui/material';
+
+
 
 const ImageCard = ({ image, deleteImage, saveImageToDb, token }) => {
   const [saveBtn, setSaveBtn] = useState(false);
@@ -62,15 +66,14 @@ const ImageCard = ({ image, deleteImage, saveImageToDb, token }) => {
       <Card>
         <Card.Img className="card-image d-flex" src={image.urls.small} />
         <Container>
-          <Card.Body className="card-img-overlay d-flex align-items-end ms-2">
-            <LoadingButton
-              variant="contained"
-              sx={{ mr: 2 }}
+          <Card.Body className="card-img-overlay align-items-end ms-2 d-flex">
+            <Button
+            variant='contained'
+              aria-label="delete"
+              sx={{ mr: 1 }}
               size="small"
               onClick={() => deleteImage(image.id)}
-            >
-              Delete
-            </LoadingButton>
+            >Delete</Button>
 
             <LoadingButton
               onClick={() => {
@@ -82,7 +85,6 @@ const ImageCard = ({ image, deleteImage, saveImageToDb, token }) => {
             >
               {image.check == 'true' ? 'Saved' : 'Save'}
             </LoadingButton>
-
             <Container>
               <Card.Title className="image-card-text">
                 {image.title?.toUpperCase()}
@@ -99,7 +101,10 @@ const ImageCard = ({ image, deleteImage, saveImageToDb, token }) => {
                   {' ' + image.user.name + ' '}
                 </Link>
                 on
-                <Link href='https://unsplash.com/?utm_source=Wishboard&utm_medium=referral'> Unsplash</Link>
+                <Link href="https://unsplash.com/?utm_source=Wishboard&utm_medium=referral">
+                  {' '}
+                  Unsplash
+                </Link>
               </Card.Text>
             </Container>
           </Card.Body>

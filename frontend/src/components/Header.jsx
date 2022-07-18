@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { Button, Box, Paper } from '@mui/material';
+import { Button, Box, Paper, SvgIcon } from '@mui/material';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 // import { ReactComponent as Logo } from '../images/logo.svg';
@@ -10,7 +10,8 @@ import Typography from '@mui/material/Typography';
 import { loginInfoEmail } from '../redux/loginInfoSlice';
 import { loginInfoName } from '../redux/loginInfoSlice';
 import { useSelector, useDispatch } from 'react-redux';
-
+import { ReactComponent as wIcon } from '../images/W_icon.svg'
+import LogoutIcon from '@mui/icons-material/Logout';
 
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5050';
@@ -85,12 +86,12 @@ const loginName = useSelector(
             <Container>
           <ThemeProvider theme={theme}>
             <Link to="/profile" style={{ textDecoration: 'none' }}>
-              <Button
-                sx={{ whiteSpace: 'nowrap', mr: '1rem', fontSize: '0.5rem' }}
+              <Button startIcon={<SvgIcon component={wIcon} inheritViewBox />}
+                sx={{ whiteSpace: 'nowrap', mr: '1rem', fontSize: '0.5rem',  }}
                 variant="contained"
                 size="medium"
                 type="button"
-              > <Typography variant="h3">My Wishboard</Typography>
+              > <Typography variant="h3" sx={{position: 'relative', top: 1}}  >My Wishboard</Typography>
                 
               </Button>
             </Link>
@@ -107,6 +108,7 @@ const loginName = useSelector(
               </Link>
             ) : (
               <Button
+              startIcon={<LogoutIcon />}
               variant="outlined"
               size="medium"
               onClick={logMeOut}
