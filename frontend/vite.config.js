@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import svgrPlugin from 'vite-plugin-svgr';
 import inject from '@rollup/plugin-inject';
 import react from '@vitejs/plugin-react';
+import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,20 +10,24 @@ export default defineConfig({
   // comment this out if that isn't relevant for your project
   build: {
     outDir: 'build',
+    manifest: true
   },
-  
-  server: { 
+
+  server: {
     port: 80,
     // hmr: {
     //   clientPort: 443
     // },
-       watch: { 
-      usePolling: true } },
+    watch: {
+      usePolling: true,
+    },
+  },
   plugins: [
     inject({
       $: 'jquery',
     }),
     react(),
+    VitePWA({ registerType: 'autoUpdate' }),
     svgrPlugin({
       svgrOptions: {
         icon: true,
@@ -30,4 +35,5 @@ export default defineConfig({
       },
     }),
   ],
+  
 });
