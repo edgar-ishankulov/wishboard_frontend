@@ -20,7 +20,6 @@ import { loginInfoEmail } from '../redux/loginInfoSlice';
 import { loginInfoName } from '../redux/loginInfoSlice';
 
 import axios from 'axios';
-import { maxWidth } from '@mui/system';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5050';
 
@@ -54,59 +53,62 @@ const AppBarTop = ({ token, removeToken }) => {
 
   return (
     <AppBar position="static">
-      {/* <Container className="d-flex"> */}
-      {/* <Toolbar> */}
       <Row className="align-items-center">
-        <Col className="col-md-4 col-12">
+        <Col className="col-md-4 col-12 mt-sm-3 mt-md-0">
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Link to='/' style={{display: "inline"}}>
-            <WLogo
-              viewBox="-34 -10 210 150"
-              style={{
-                maxHeight: '6rem',
-                position: 'relative',
-                // display: 'flex',
-                right: '0',
-              }}
-            />
+            <Link to="/" style={{ display: 'inline' }}>
+              <WLogo
+                viewBox="-34 -10 210 150"
+                style={{
+                  maxHeight: '6rem',
+                  position: 'relative',
+                  // display: 'flex',
+                  right: '0',
+                }}
+              />
             </Link>
           </Box>
         </Col>
 
         <Col className="col-md-4 col-12"></Col>
 
-        <Col className="col-md-3 col-12 mt-2">
+        <Col className="col-md-3 col-12 mb-sm-3 mt-sm-1 mb-md-0">
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Link to="/profile" style={{ textDecoration: 'none', display: "inline", }}>
-            <Button
-              startIcon={<SvgIcon component={wIcon} inheritViewBox />}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                whiteSpace: 'nowrap',
-                // mr: '2rem',
-                fontSize: '1rem',
-              }}
-              color="inherit"
-              size="medium"
+            <Link
+              to="/profile"
+              style={{ textDecoration: 'none', display: 'inline' }}
             >
-              <Typography sx={{ color: 'white' }}>My Wishboard</Typography>
-            </Button>
-
+              <Button
+                startIcon={<SvgIcon component={wIcon} inheritViewBox />}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  whiteSpace: 'nowrap',
+                  fontSize: '1rem',
+                }}
+                color="inherit"
+                size="medium"
+              >
+                <Typography sx={{ color: 'white' }}>My Wishboard</Typography>
+              </Button>
             </Link>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             {token == undefined || token == null ? (
-              <Link to="/profile" style={{ textDecoration: 'none', display: "inline", }}>
-              <Button
-                color="inherit"
-                size="medium"
-                sx={{ fontSize: '1rem',
-                //  mr: '2rem'
-                 }}
+              <Link
+                to="/profile"
+                style={{ textDecoration: 'none', display: 'inline' }}
               >
-                <Typography sx={{ color: 'white' }}> Login </Typography>
-              </Button>
+                <Button
+                  color="inherit"
+                  size="medium"
+                  sx={{
+                    fontSize: '1rem',
+                    //  mr: '2rem'
+                  }}
+                >
+                  <Typography sx={{ color: 'white' }}> Login </Typography>
+                </Button>
               </Link>
             ) : (
               <Button
@@ -122,8 +124,6 @@ const AppBarTop = ({ token, removeToken }) => {
           </Box>
         </Col>
       </Row>
-      {/* </Toolbar> */}
-      {/* </Container> */}
     </AppBar>
   );
 };
