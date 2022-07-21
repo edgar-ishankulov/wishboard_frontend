@@ -45,6 +45,7 @@ const App = () => {
       setIsLoading(false);
     } catch (error) {
       if (error.response.status == 400) {
+        setIsLoading(false);
         setBadQuery(true);
       }
     }
