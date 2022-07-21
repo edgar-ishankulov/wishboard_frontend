@@ -46,11 +46,11 @@ const Header = ({ removeToken, token }) => {
       <Container className="my-4">
         <Row>
 
-            <Link to="/" style={{ display: 'flex', justifyContent: 'center' }}>
-              <Box sx={{ display: 'flex' }}>
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Link to="/" style={{ display: 'inline', justifyContent: 'center' }}>
                 <img src={Logo} />
-              </Box>
             </Link>
+              </Box>
 
         </Row>
       </Container>
