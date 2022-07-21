@@ -11065,6 +11065,9 @@ h3, .h3 {
   margin: 0 10px;
 }
 
-.pretest {
-  background-color: red;
+@media screen and (min-width: 394px) {
+  .responsive-appbar {
+    display: flex;
+    justify-content: center;
+  }
 }/*# sourceMappingURL=custom.css.map */

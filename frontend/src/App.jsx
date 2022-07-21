@@ -78,7 +78,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <>
       <Header
         removeToken={removeToken}
         token={token}
@@ -124,7 +124,7 @@ const App = () => {
           </Container>
         </Container>
       )}
-    </div>
+    </>
   );
 };
 

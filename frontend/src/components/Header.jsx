@@ -45,15 +45,12 @@ const Header = ({ removeToken, token }) => {
     <AppBarTop token={token} removeToken={removeToken} />
       <Container className="my-4">
         <Row>
-          <Col className="col-lg-4"></Col>
 
-          <Col className=" col-lg-4 col-12 col-sm-12 align-self-center mt-1 mb-2">
             <Link to="/" style={{ display: 'flex', justifyContent: 'center' }}>
               <Box sx={{ display: 'flex' }}>
                 <img src={Logo} />
               </Box>
             </Link>
-          </Col>
 
         </Row>
       </Container>

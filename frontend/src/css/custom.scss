@@ -3,6 +3,10 @@
 $primary: black;
 $h5-font-size : 5px;
 
+$breakpoint-smartphone: 394px;
+
+
+
 
 @import "../../node_modules/bootstrap/scss/functions";
 @import "../../node_modules/bootstrap/scss/variables";
@@ -42,6 +46,9 @@ h3 {
     margin: 0 10px;
 }
 
-.pretest {
-    background-color: red;
+@media screen and (min-width:$breakpoint-smartphone) {
+   .responsive-appbar {
+    display: flex;
+    justify-content: center;
+   }
 }

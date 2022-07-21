@@ -9,6 +9,7 @@ import {
   Box,
   Snackbar,
   Alert,
+  CircularProgress,
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import '../css/custom.css';
@@ -30,10 +31,9 @@ function Login({ setToken }) {
   const [open, setOpen] = useState(false);
   const [loginPassError, setLoginPassError] = useState(false);
   const [notVerifiedError, setNotVerifiedError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const loginEmail = useSelector((state) => state.loginInfo.email);
-  const loginName = useSelector(
-    (state) => state.loginInfo.name
-  );
+  const loginName = useSelector((state) => state.loginInfo.name);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -47,6 +47,7 @@ function Login({ setToken }) {
 
   const logMeIn = async (event) => {
     try {
+      setIsLoading(true);
       const res = await axios({
         method: 'POST',
         url: `${API_URL}/token`,
@@ -58,10 +59,12 @@ function Login({ setToken }) {
       dispatch(loginInfoEmail(res.data.user.email));
       dispatch(loginInfoName(res.data.user.name));
       setToken(res.data.access_token);
+      setIsLoading(false);
     } catch (error) {
       if (error.response.status == '401') {
         // navigate('/', { replace: true });
         setLoginPassError(true);
+        setIsLoading(false);
         console.log(error.response.status);
       }
       if (error.response.status == '402') {
@@ -113,90 +116,100 @@ function Login({ setToken }) {
 
   return (
     <>
-    <Container className='mt-5'>
+      <Container className="mt-5">
+        <h2 className="d-flex justify-content-center">Please Log In</h2>
+      </Container>
+      {isLoading ? (
+        <Container className="d-flex justify-content-center vh-30">
+          <CircularProgress />
+        </Container>
+      ) : (
+        <>
+          <Container className="d-flex justify-content-center my-3">
+            <FormControl sx={{ width: 400 }}>
+              <Snackbar
+                open={open}
+                autoHideDuration={5000}
+                onClose={handleClose}
+              >
+                <Alert variant="filled" severity="error">
+                  Please input a valid email address
+                </Alert>
+              </Snackbar>
+              <Snackbar
+                open={loginPassError}
+                autoHideDuration={5000}
+                onClose={handleClose}
+              >
+                <Alert variant="filled" severity="error">
+                  Wrong email or password
+                </Alert>
+              </Snackbar>
+              <Snackbar
+                open={notVerifiedError}
+                autoHideDuration={5000}
+                onClose={handleClose}
+              >
+                <Alert variant="filled" severity="error">
+                  Not authorized. Please verify your email
+                </Alert>
+              </Snackbar>
 
-      <h2 className="d-flex justify-content-center">Please Log In</h2>
-    </Container>
+              <InputLabel sx={{ mx: 2 }}>Enter your email</InputLabel>
+              <OutlinedInput
+                label="Enter your email"
+                required={true}
+                onChange={handleChange}
+                type="email"
+                text={loginForm.email}
+                name="email"
+                placeholder="email"
+                value={loginForm.email}
+                sx={{ mx: 2 }}
+              />
+            </FormControl>
+          </Container>
 
-      <Container className="d-flex justify-content-center my-3">
-        <FormControl sx={{ width: 400 }}>
-          <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
-            <Alert variant="filled" severity="error">
-              Please input a valid email address
-            </Alert>
-          </Snackbar>
-          <Snackbar
-            open={loginPassError}
-            autoHideDuration={5000}
-            onClose={handleClose}
-          >
-            <Alert variant="filled" severity="error">
-              Wrong email or password
-            </Alert>
-          </Snackbar>
-          <Snackbar
-            open={notVerifiedError}
-            autoHideDuration={5000}
-            onClose={handleClose}
-          >
-            <Alert variant="filled" severity="error">
-              Not authorized. Please verify your email
-            </Alert>
-          </Snackbar>
-
-          <InputLabel sx={{ mx: 2 }}>Enter your email</InputLabel>
-          <OutlinedInput
-            label="Enter your email"
-            required={true}
-            onChange={handleChange}
-            type="email"
-            text={loginForm.email}
-            name="email"
-            placeholder="email"
-            value={loginForm.email}
-            sx={{ mx: 2 }}
-          />
-        </FormControl>
-      </Container>
-
-      <Container className="d-flex justify-content-center my-3">
-        <FormControl sx={{ width: 400 }}>
-          <InputLabel sx={{ mx: 2 }}>Input your password</InputLabel>
-          <OutlinedInput
-            required={true}
-            label="Input your password"
-            onChange={handleChange}
-            type="password"
-            text={loginForm.password}
-            name="password"
-            placeholder="Password"
-            value={loginForm.password}
-            sx={{ mx: 2 }}
-          />
-        </FormControl>
-      </Container>
-      <Container className="d-flex justify-content-center my-3">
-        <Button
-          type="submit"
-          variant="contained"
-          size="small"
-          onClick={() => {
-            handleClick();
-          }}
-        >
-          Submit
-        </Button>
-      </Container>
-      <Container className="d-flex justify-content-center mt-5">
-        <h3>Don't have an account?</h3>
-      </Container>
-      <Container className="d-flex justify-content-center ">
-        <Link to="/signup" style={{ textDecoration: 'none' }}>
-          <Button variant="outlined" size="small">
-            Signup
-          </Button>
-        </Link>
-      </Container>
+          <Container className="d-flex justify-content-center my-3">
+            <FormControl sx={{ width: 400 }}>
+              <InputLabel sx={{ mx: 2 }}>Input your password</InputLabel>
+              <OutlinedInput
+                required={true}
+                label="Input your password"
+                onChange={handleChange}
+                type="password"
+                text={loginForm.password}
+                name="password"
+                placeholder="Password"
+                value={loginForm.password}
+                sx={{ mx: 2 }}
+              />
+            </FormControl>
+          </Container>
+          <Container className="d-flex justify-content-center my-3">
+            <Button
+              type="submit"
+              variant="contained"
+              size="small"
+              onClick={() => {
+                handleClick();
+              }}
+            >
+              Submit
+            </Button>
+          </Container>
+          <Container className="d-flex justify-content-center mt-5">
+            <h3>Don't have an account?</h3>
+          </Container>
+          <Container className="d-flex justify-content-center ">
+            <Link to="/signup" style={{ textDecoration: 'none' }}>
+              <Button variant="outlined" size="small">
+                Signup
+              </Button>
+            </Link>
+          </Container>
+        </>
+      )}
     </>
   );
 }

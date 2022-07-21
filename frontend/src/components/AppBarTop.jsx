@@ -8,10 +8,11 @@ import {
   IconButton,
   SvgIcon,
 } from '@mui/material';
-import { Container } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { ReactComponent as wIcon } from '../images/W_icon.svg';
 import { ReactComponent as WLogo } from '../images/Wishboard_logo.svg';
+import '../css/custom.css';
 
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useSelector, useDispatch } from 'react-redux';
@@ -52,38 +53,60 @@ const AppBarTop = ({ token, removeToken }) => {
   };
 
   return (
-    <Box >
-      <AppBar position="static">
-        <Toolbar>
-<Link to='/'>
-        <WLogo viewBox="0 -10 200 150" style={{maxHeight: '6rem' }} />
-</Link>
-
-          <Container className="d-flex justify-content-end">
-            <Link to="/profile" style={{ textDecoration: 'none' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Button
-                  startIcon={<SvgIcon component={wIcon} inheritViewBox />}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    whiteSpace: 'nowrap',
-                    mr: '1rem',
-                    fontSize: '1rem',
-                  }}
-                  color="inherit"
-                  size="medium"
-                >
-                  <Typography sx={{ color: 'white' }}>My Wishboard</Typography>
-                </Button>
-              </Box>
+    <AppBar position="static">
+      {/* <Container className="d-flex"> */}
+      {/* <Toolbar> */}
+      <Row className="align-items-center">
+        <Col className="col-md-4 col-12">
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Link to='/' style={{display: "inline"}}>
+            <WLogo
+              viewBox="-34 -10 210 150"
+              style={{
+                maxHeight: '6rem',
+                position: 'relative',
+                // display: 'flex',
+                right: '0',
+              }}
+            />
             </Link>
+          </Box>
+        </Col>
 
+        <Col className="col-md-4 col-12"></Col>
+
+        <Col className="col-md-3 col-12 mt-2">
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Link to="/profile" style={{ textDecoration: 'none', display: "inline", }}>
+            <Button
+              startIcon={<SvgIcon component={wIcon} inheritViewBox />}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                whiteSpace: 'nowrap',
+                // mr: '2rem',
+                fontSize: '1rem',
+              }}
+              color="inherit"
+              size="medium"
+            >
+              <Typography sx={{ color: 'white' }}>My Wishboard</Typography>
+            </Button>
+
+            </Link>
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             {token == undefined || token == null ? (
-              <Link to="/profile" style={{ textDecoration: 'none' }}>
-                <Button color="inherit" size="medium" sx={{ fontSize: '1rem' }}>
+              <Link to="/profile" style={{ textDecoration: 'none', display: "inline", }}>
+              <Button
+                color="inherit"
+                size="medium"
+                sx={{ fontSize: '1rem',
+                //  mr: '2rem'
+                 }}
+              >
                 <Typography sx={{ color: 'white' }}> Login </Typography>
-                </Button>
+              </Button>
               </Link>
             ) : (
               <Button
@@ -93,13 +116,15 @@ const AppBarTop = ({ token, removeToken }) => {
                 onClick={logMeOut}
                 sx={{ fontSize: '1rem' }}
               >
-               <Typography sx={{ color: 'white' }}>Logout</Typography>
+                <Typography sx={{ color: 'white' }}>Logout</Typography>
               </Button>
             )}
-          </Container>
-        </Toolbar>
-      </AppBar>
-    </Box>
+          </Box>
+        </Col>
+      </Row>
+      {/* </Toolbar> */}
+      {/* </Container> */}
+    </AppBar>
   );
 };
 export default AppBarTop;
