@@ -160,11 +160,14 @@ const Register = ({ token, removeToken }) => {
   return (
     <>
       <Header removeToken={removeToken} token={token} />
-      <h2 className="d-flex justify-content-center my-5">Please Sign Up</h2>
       {token ? (
-        <h1> "You're Already Signed In"</h1>
+        <Container className='d-flex justify-content-center'>
+
+          <h2> "You're Already Signed In"</h2>
+        </Container>
       ) : (
         <>
+        <h2 className="d-flex justify-content-center my-5">Please Sign Up</h2>
           <Container className="d-flex justify-content-center my-3">
             <FormControl sx={{ width: 400 }}>
             <Snackbar

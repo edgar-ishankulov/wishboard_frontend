@@ -1,10 +1,10 @@
 import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
-import Profile from './components/Profile';
+import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import App from './App';
-import Wishboard from './pages/Wishboard';
+import Wishboard from './components/Wishboard';
 import useToken from './components/UseToken';
 
 const Router = () => {

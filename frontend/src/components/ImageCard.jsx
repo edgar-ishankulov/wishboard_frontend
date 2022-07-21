@@ -89,7 +89,7 @@ const ImageCard = ({ image, deleteImage, saveImageToDb, token }) => {
               <Card.Title className="image-card-text">
                 {image.title?.toUpperCase()}
               </Card.Title>
-              <Card.Text className="image-card-text fs-5">
+              <Card.Text className="image-card-text">
                 Photo by
                 <Link
                   href={

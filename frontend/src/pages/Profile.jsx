@@ -1,8 +1,9 @@
-import Login from '../pages/Login';
-import Header from './Header';
-import Wishboard from '../pages/Wishboard';
-import useToken from './UseToken';
+import Login from './Login';
+import Header from '../components/Header';
+import Wishboard from '../components/Wishboard';
+import useToken from '../components/UseToken';
 import { useSelector, useDispatch } from 'react-redux';
+import { useState } from 'react';
 import {
   Alert,
   Link as hLink,
@@ -16,6 +17,8 @@ import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { verificationEmail } from '../redux/verificationEmailSlice';
 import { accExists } from '../redux/accExistsSlice';
+import AppBarTop from '../components/AppBarTop';
+
 
 function Profile() {
   const dispatch = useDispatch();
@@ -28,6 +31,7 @@ function Profile() {
   );
   const accExistsState = useSelector((state) => state.accExists.accExists);
   const imgLengthCheck = useSelector((state) => state.imgLengthCheck.length);
+
   const { token, removeToken, setToken } = useToken();
 
   const handleClose = (event, reason) => {
@@ -40,7 +44,7 @@ function Profile() {
 
   return (
     <div>
-      <Header removeToken={removeToken} token={token} />
+    <AppBarTop token={token} removeToken={removeToken} />
       <div>
         <Snackbar
           open={accExistsState}
@@ -65,41 +69,6 @@ function Profile() {
           <Login setToken={setToken} />
         ) : (
           <>
-            {imgLengthCheck == 0 ? (
-              <Container className="d-flex justify-content-center">
-                <Alert variant="outlined" severity="info" sx={{ width: '60%' }}>
-                  Your Wishboard is empty.{' '}
-                  <strong>
-                    Please{' '}
-                    <Link
-                      to="/"
-                      style={{ textDecoration: 'none', color: 'none' }}
-                    >
-                      <Chip
-                        label="Search"
-                        icon={<SearchIcon />}
-                        size="small"
-                        href="#basic-chip"
-                        variant="outlined"
-                        clickable
-                      />
-                    </Link>{' '}
-                    for images and save them to your Wishboard
-                  </strong>
-                </Alert>
-              </Container>
-            ) : (
-              ''
-            )}
-                  <Divider  component="li" sx={{ display:'flex', justifyContent: 'center'}}/>
-
-                  {loginName !== '' ? 
-            <Container className='position-absolute justify-content-end align-self-start' >
-              <Paper elevation={3} sx={{display: 'inline-block', paddingX:2, paddingY:0.5, position: 'relative', top: -20 }}>
-            <h5 className='pt-2'>Hi {loginName}! Wish and visualize for a brighter tomorrow!</h5>
-            </Paper>
-            </Container> : ''
-            }
 
             <Wishboard token={token} setToken={setToken} />
           </>
