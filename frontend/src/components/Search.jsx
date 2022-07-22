@@ -2,33 +2,39 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import { Button, Box } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 import { setWord } from '../redux/wordSlice';
 import SearchIcon from '@mui/icons-material/Search';
+import '../css/custom.css'
 
 const Search = ({ handleSubmit }) => {
-  const word = useSelector((state) => state.setWord.word)
-  const dispatch = useDispatch()
+  const word = useSelector((state) => state.setWord.word);
+  const dispatch = useDispatch();
 
   return (
-    <Container className="">
-      <Row className="justify-content-center">
-        <Col className="col-xl-6 col-lg-6 col-md-8 col-sm-8 col-10 justify-content-center">
+    <Container className='mt-sm-5'>
+      <Row>
+        <Col className='col-md-2 col-sm-12'></Col>
+        <Col className="col-md-6 ps-md-5 col-sm-10 m-sm-auto">
           <Form onSubmit={handleSubmit}>
-            <Container className="d-flex container-fluid">
-              <Form.Control
-                type="text"
-                value={word}
-                onChange={(event) => dispatch(setWord(event.target.value))}
-                placeholder="Search for new images"
-              />
-              <Box alignSelf={'center'} ml={'1rem'}>
-                <Button startIcon={<SearchIcon />} variant="contained" size="medium" type="submit" sx={{ fontSize: "13px"}}>
-                  Search
-                </Button>
-              </Box>
-            </Container>
+            <Form.Control
+              type="text"
+              value={word}
+              onChange={(event) => dispatch(setWord(event.target.value))}
+              placeholder="Search for new images"
+            />
           </Form>
+        </Col>
+        <Col className="d-flex col-md-4 col-sm-12 justify-content-center justify-content-md-start mt-sm-4 mt-md-0">
+          <Button
+            startIcon={<SearchIcon />}
+            variant="contained"
+            size="medium"
+            type="submit"
+            sx={{ fontSize: '13px', display: 'flex' }}
+          >
+            Search
+          </Button>
         </Col>
       </Row>
     </Container>

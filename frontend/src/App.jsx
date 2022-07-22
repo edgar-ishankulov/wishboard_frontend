@@ -79,13 +79,15 @@ const App = () => {
 
   return (
     <>
+   
+
       <Header
         removeToken={removeToken}
         token={token}
         setToken={setToken}
-        title="Images Gallery 2"
+        title="Wishboard"
         version="1.0.0"
-      />
+        />
       <Search handleSubmit={handleSearchSubmit} />
       {isLoading ? (
         <Container className="d-flex justify-content-center vh-30">
