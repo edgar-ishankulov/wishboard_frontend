@@ -87,9 +87,9 @@ const App = () => {
         setToken={setToken}
         title="Wishboard"
         version="1.0.0"
-        />
+        /> 
       <Search handleSubmit={handleSearchSubmit} />
-      {isLoading ? (
+     {isLoading ? (
         <Container className="d-flex justify-content-center vh-30">
           <CircularProgress />
         </Container>

@@ -44,7 +44,7 @@ const Header = ({ removeToken, token }) => {
   return (
     <>
     <AppBarTop token={token} removeToken={removeToken} />
-        <Row>
+        <Row id='header-row' className='w-100'>
       <Container className="my-4 d-sm-none d-md-block">
 
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>

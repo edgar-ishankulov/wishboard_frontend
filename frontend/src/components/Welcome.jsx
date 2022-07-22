@@ -4,7 +4,7 @@ import { Container } from 'react-bootstrap';
 
 const Welcome = () => (
   <div className="jumbotron jumbotron-fluid">
-    <div className="container my-5 px-3 ">
+    {/* <div className="container my-5  "> */}
       <h1 className="display-4 d-flex justify-content-center fs-2 fw-semibold">
         Images Gallery 2
       </h1>
@@ -18,6 +18,6 @@ const Welcome = () => (
         </Button>
       </p>
     </div>
-  </div>
+  // </div>
 );
 export default Welcome;

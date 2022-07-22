@@ -52,9 +52,10 @@ const AppBarTop = ({ token, removeToken }) => {
   };
 
   return (
-    <AppBar position="static">
-      <Row className="align-items-center">
-        <Col className="col-md-4 col-12 mt-sm-3 mt-md-0">
+
+      <AppBar position="static">
+      <Row id='appbar' className=' w-100'>
+        <Col className="col-md-4 col-sm-12 mt-sm-3 mt-md-0">
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Link to="/" style={{ display: 'inline' }}>
               <WLogo
@@ -65,19 +66,19 @@ const AppBarTop = ({ token, removeToken }) => {
                   // display: 'flex',
                   right: '0',
                 }}
-              />
+                />
             </Link>
           </Box>
         </Col>
 
-        <Col className="col-md-4 col-12"></Col>
+        <Col className="col-md-4 col-sm-0"></Col>
 
-        <Col className="col-md-3 col-12 mb-sm-3 mt-sm-1 mb-md-0">
+        <Col className="col-md-3 col-sm-12 mb-sm-3 mt-sm-1 mb-md-0 align-self-center">
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Link
               to="/profile"
               style={{ textDecoration: 'none', display: 'inline' }}
-            >
+              >
               <Button
                 startIcon={<SvgIcon component={wIcon} inheritViewBox />}
                 sx={{
@@ -88,7 +89,7 @@ const AppBarTop = ({ token, removeToken }) => {
                 }}
                 color="inherit"
                 size="medium"
-              >
+                >
                 <Typography sx={{ color: 'white' }}>My Wishboard</Typography>
               </Button>
             </Link>
@@ -96,27 +97,26 @@ const AppBarTop = ({ token, removeToken }) => {
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             {token == undefined || token == null ? (
               <Link
-                to="/profile"
-                style={{ textDecoration: 'none', display: 'inline' }}
+              to="/profile"
+              style={{ textDecoration: 'none', display: 'inline' }}
               >
                 <Button
                   color="inherit"
                   size="medium"
                   sx={{
                     fontSize: '1rem',
-                    //  mr: '2rem'
                   }}
-                >
+                  >
                   <Typography sx={{ color: 'white' }}> Login </Typography>
                 </Button>
               </Link>
             ) : (
               <Button
-                startIcon={<LogoutIcon />}
-                color="inherit"
-                size="medium"
-                onClick={logMeOut}
-                sx={{ fontSize: '1rem' }}
+              startIcon={<LogoutIcon />}
+              color="inherit"
+              size="medium"
+              onClick={logMeOut}
+              sx={{ fontSize: '1rem' }}
               >
                 <Typography sx={{ color: 'white' }}>Logout</Typography>
               </Button>
