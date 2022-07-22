@@ -27,6 +27,7 @@ const Search = ({ handleSubmit }) => {
         </Col>
         <Col className="d-flex col-md-4 col-sm-12 justify-content-center justify-content-md-start mt-sm-4 mt-md-0">
           <Button
+          onClick={handleSubmit}
             startIcon={<SearchIcon />}
             variant="contained"
             size="medium"
