@@ -51,6 +51,7 @@ const App = () => {
     }
     dispatch(setWord(''));
   };
+  
   const handleDeleteImage = (id) => {
     setImages(images.filter((image) => image.id !== id));
   };
@@ -90,8 +91,9 @@ const App = () => {
         /> 
       <Search handleSubmit={handleSearchSubmit} />
      {isLoading ? (
-        <Container className="d-flex justify-content-center vh-30">
-          <CircularProgress />
+        <Container className="d-flex justify-content-center mt-5">
+         
+          <CircularProgress  className='mt-5'/>
         </Container>
       ) : (
         <Container>

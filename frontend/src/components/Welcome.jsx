@@ -9,7 +9,7 @@ const Welcome = () => (
         Images Gallery 2
       </h1>
       <p className="lead d-flex justify-content-center px-5 text-center">
-        This is a simple application that retreives photos using Unsplash API
+        This is an application that retreives photos using Unsplash API
         according to the user search inputs.
       </p>
       <p className="d-flex justify-content-center">

@@ -75,10 +75,9 @@ dispatchImagesLength()
   return (
     <>
     {isLoading?
-     <Container className='d-flex justify-content-center vh-30'>
-
-     <CircularProgress /> 
-     </Container>
+     <Container className='d-flex justify-content-center vh-30 '>
+     <CircularProgress/> 
+ </Container>
      :
       <Container className="mt-5">
         {images.length ? (

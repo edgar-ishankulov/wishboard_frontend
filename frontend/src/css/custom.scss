@@ -1,6 +1,5 @@
 
 
-$primary: black;
 $h5-font-size : 5px;
 
 $breakpoint-smartphone: 394px;
@@ -19,16 +18,10 @@ $grid-breakpoints: (
 @import "../../node_modules/bootstrap/scss/functions";
 @import "../../node_modules/bootstrap/scss/variables";
 
-$custom-theme-colors: (
-    "altlight": rgb(101, 221, 221)
-);
-
-$theme-colors: map-merge($custom-theme-colors, $theme-colors);
 
 @import "../../node_modules/bootstrap/scss/maps";
 @import "../../node_modules/bootstrap/scss/mixins";
 @import "../../node_modules/bootstrap/scss/root";
-@import "../../node_modules/bootstrap/scss/bootstrap";
 
 h3 {
    
