@@ -20,6 +20,8 @@ Wishboard is a frontend React app to a simple image collection service that let'
 
 2. Run `npm install` to install all necessary dependencies.
 
-3. Run `npm start` to launch the Vite server and follow the exposed localhost port.
+3. Create .env file in root directory, add `VITE_API_URL=https://wishboard-356714.ey.r.appspot.com/` line and save.
+
+4. Run `npm start` to launch the Vite server and follow the exposed localhost port.
 
 ### This is my first programming pet project, so I would love to see contributions in any field. Thank you!
